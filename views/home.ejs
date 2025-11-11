@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= appName %></title>
+  <title>Smart Expense Splitter</title>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Raleway:wght@500;700&display=swap" rel="stylesheet">
@@ -14,10 +14,15 @@
     rel="stylesheet">
 
   <link rel="stylesheet" href="/css/style.css">
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+/>
+
 </head>
 <body>
 
-  <!-- Navbar -->
+  <!-- Navbar
   <nav class="navbar navbar-expand-lg py-3">
     <div class="container">
       <a class="navbar-brand fw-bold" href="#">💰 Smart Expense Splitter</a>
@@ -27,9 +32,64 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Groups</a></li>
+          <li class="nav-item"><a class="nav-link" href="groups">Groups</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Expenses</a></li>
           <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav> -->
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg py-3">
+  <div class="container">
+    <h4 class="fw-bold">Smart Expense Splitter</h4>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <% if (!user) { %>
+          <li class="nav-item"><a class="nav-link" href="/register">Sign Up</a></li>
+          <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+        <% } else { %>
+          <li class="nav-item"><a class="nav-links active" href="/home">Home</a></li>
+          <li class="nav-item"><a class="nav-links" href="/groups">Groups</a></li>
+          <li class="nav-item"><a class="nav-links" href="/expenses">Expenses</a></li>
+          <li class="nav-item"><a class="nav-links" href="/about">About</a></li>
+
+          <!-- Profile Dropdown -->
+          <li class="nav-item dropdown ms-3">
+            <div class="dropdown">
+              <div class="profile-trigger" onclick="toggleDropdown()">
+                <img
+                  src="<%= user.profilePic
+                    ? '/uploads/' + user.profilePic
+                    : 'https://i.pinimg.com/1200x/8b/84/17/8b841799752db5b6e1aa1aa56fe737db.jpg' %>"
+                  alt="Profile"
+                  class="profile-avatar"
+                />
+                <span class="user-name"><%= user.name %></span>
+              </div>
+
+              <div id="profileDropdown" class="dropdown-content shadow-lg">
+                <a href="/profile"><i class="bi bi-person-circle"></i> Profile</a>
+                <a href="/setting"><i class="bi bi-gear"></i> Settings</a>
+                <form id="logoutForm" action="/logout" method="POST" style="display:inline;">
+                  <button type="button" class="dropdown-logout" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                  </button>
+                </form>
+              </div>
+            </div>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
         </ul>
       </div>
     </div>
@@ -147,6 +207,27 @@
         </div>
       </div>
     </div>
+
+  <!-- Logout Confirmation Modal -->
+<!-- 🌸 Aesthetic Pink Logout Confirmation Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content logout-modal text-center shadow-lg">
+      <div class="modal-header border-0 justify-content-center">
+        <h5 class="modal-title fw-bold fs-4 logout-title" id="logoutModalLabel">
+          Are you sure you want to logout?
+        </h5>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-4">You’ll be signed out from Smart Expense Splitter 💗</p>
+        <div class="d-flex justify-content-center gap-3">
+          <button type="button" class="btn cancel-btn" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn confirm-logout-btn" onclick="logoutUser()">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
   </section>
 
   <!-- Footer -->
@@ -163,6 +244,19 @@
       const card = btn.closest(".flip-card");
       card.classList.remove("flipped");
     }
+
+  function toggleDropdown() {
+    document.getElementById("profileDropdown").classList.toggle("show");
+  }
+
+  window.onclick = function (event) {
+    if (!event.target.closest('.profile-trigger')) {
+      document.getElementById("profileDropdown").classList.remove("show");
+    }
+  };
+    function logoutUser() {
+    document.getElementById("logoutForm").submit();
+  }
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
