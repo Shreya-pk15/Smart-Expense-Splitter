@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('./partials/head') %>
+  <title>Expenses - <%= appName %></title>
+
+  <style>
+    html, body {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    main {
+      flex: 1;
+      position: relative;
+      transition: filter 0.3s ease;
+    }
+
+    /* Floating Add Button */
+    .add-expense-btn {
+      position: fixed;
+      bottom: 80px;
+      right: 40px;
+      background: linear-gradient(45deg, #ff6f91, #ff9671);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 30px;
+      text-align: center;
+      line-height: 60px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      z-index: 1050;
+    }
+
+    .add-expense-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* Center Modal (Filter / Add) */
+    .filter-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      width: 350px;
+      background: linear-gradient(45deg, #fff5f7, #ffe0e9);
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+      padding: 25px;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 2000;
+      display: none;
+    }
+
+    .filter-modal.active {
+      display: block;
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .filter-modal h5 {
+      color: #ff4d6d;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .filter-btn {
+      background: linear-gradient(45deg, #ff6f91, #ff9671);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .filter-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .btn-gradient {
+      background: linear-gradient(45deg, #ff6f91, #ff9671);
+      color: white;
+      border: none;
+    }
+
+    /* Blur + Overlay Background */
+    .blurred {
+      filter: blur(6px);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(5px);
+      z-index: 1500;
+      display: none;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+  </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- ✅ Navbar -->
+  <%- include('./partials/navbar', { page: 'expenses', userId: userId }) %>
+
+  <!-- ✅ Header -->
+  <header class="bg-light py-4 mb-4 shadow-sm">
+    <div class="container text-center">
+      <h1 class="display-6 fw-bold text-pink">💰 Your Expenses</h1>
+      <p class="text-muted mb-0">Track and manage all your expenses here.</p>
+    </div>
+  </header>
+
+  <!-- ✅ Main Content -->
+  <main id="mainContent" class="container flex-grow-1">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="text-pink">Your Expenses</h3>
+      <button class="filter-btn d-flex align-items-center" id="openFilterBtn">
+        <i class="bi bi-funnel me-2"></i> Filter
+      </button>
+    </div>
+
+    <!-- 📋 Expense List -->
+    <div class="expense-list mt-4">
+      <% if (expenses && expenses.length > 0) { %>
+        <% expenses.forEach(expense => { %>
+          <div class="card mb-3 shadow-sm">
+            <div class="card-body d-flex justify-content-between align-items-center">
+              <div>
+                <h5 class="mb-1"><%= expense.category %></h5>
+                <p class="text-muted mb-0"><%= expense.date.toDateString() %></p>
+              </div>
+              <span class="fw-bold text-pink">₹<%= expense.amount %></span>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p class="text-muted text-center">No expenses found. Add one!</p>
+      <% } %>
+    </div>
+
+    <!-- ➕ Floating Add Button -->
+    <button class="add-expense-btn" title="Add Expense">+</button>
+  </main>
+
+  <!-- 🌸 Center Filter Modal -->
+  <div id="filterModal" class="filter-modal">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h5>Filter Expenses</h5>
+      <button type="button" class="btn-close" id="closeFilterBtn"></button>
+    </div>
+    <form action="/expenses/filter" method="GET">
+      <div class="mb-3">
+        <label class="form-label">Category</label>
+        <input type="text" class="form-control" name="category" placeholder="e.g. Food, Bills">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Date</label>
+        <input type="date" class="form-control" name="date">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Minimum Amount (₹)</label>
+        <input type="number" class="form-control" name="minAmount">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Maximum Amount (₹)</label>
+        <input type="number" class="form-control" name="maxAmount">
+      </div>
+      <button type="submit" class="btn btn-gradient w-100">Apply Filters</button>
+    </form>
+  </div>
+
+  <!-- ➕ Add Expense Modal -->
+  <div id="addExpenseModal" class="filter-modal">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h5>Add Expense</h5>
+      <button type="button" class="btn-close" id="closeAddBtn"></button>
+    </div>
+    <form action="/expenses/add" method="POST">
+      <div class="mb-3">
+        <label class="form-label">Title</label>
+        <input type="text" class="form-control" name="title" placeholder="e.g. Grocery">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Category</label>
+        <input type="text" class="form-control" name="category" placeholder="e.g. Food, Bills">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Amount (₹)</label>
+        <input type="number" class="form-control" name="amount" placeholder="e.g. 500" required>
+      </div>
+      <button type="submit" class="btn btn-gradient w-100">Add Expense</button>
+    </form>
+  </div>
+
+  <!-- 🌫 Overlay -->
+  <div id="overlay" class="overlay"></div>
+
+  <!-- ✅ Footer -->
+  <%- include('./partials/footer') %>
+
+  <!-- Scripts -->
+  <script>
+    const filterModal = document.getElementById("filterModal");
+    const addExpenseModal = document.getElementById("addExpenseModal");
+    const overlay = document.getElementById("overlay");
+    const main = document.getElementById("mainContent");
+    const openFilterBtn = document.getElementById("openFilterBtn");
+    const closeFilterBtn = document.getElementById("closeFilterBtn");
+    const addExpenseBtn = document.querySelector(".add-expense-btn");
+    const closeAddBtn = document.getElementById("closeAddBtn");
+
+    // Open Filter
+    openFilterBtn.addEventListener("click", () => {
+      filterModal.classList.add("active");
+      overlay.classList.add("active");
+      main.classList.add("blurred");
+    });
+
+    // Close Filter
+    const closeFilter = () => {
+      filterModal.classList.remove("active");
+      overlay.classList.remove("active");
+      main.classList.remove("blurred");
+    };
+    closeFilterBtn.addEventListener("click", closeFilter);
+
+    // Open Add Expense
+    addExpenseBtn.addEventListener("click", () => {
+      addExpenseModal.classList.add("active");
+      overlay.classList.add("active");
+      main.classList.add("blurred");
+    });
+
+    // Close Add Expense
+    const closeAddModal = () => {
+      addExpenseModal.classList.remove("active");
+      overlay.classList.remove("active");
+      main.classList.remove("blurred");
+    };
+    closeAddBtn.addEventListener("click", closeAddModal);
+
+    // Close on overlay click
+    overlay.addEventListener("click", () => {
+      closeFilter();
+      closeAddModal();
+    });
+  </script>
+
+</body>
+</html>
