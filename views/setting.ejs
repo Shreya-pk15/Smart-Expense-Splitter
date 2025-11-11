@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Expense Splitter</title>
+  <link rel="stylesheet" href="/styles/style.css">
+  <style>
+    /* SETTINGS PAGE LAYOUT */
+    .settings-wrapper {
+      display: flex;
+      min-height: 90vh;
+      background-color: var(--light-bg);
+    }
+
+    /* SIDEBAR */
+    .settings-sidebar {
+      width: 260px;
+      background: #fff;
+      border-right: 2px solid #ffd6eb;
+      padding: 30px 20px;
+      box-shadow: 0 0 10px rgba(248, 6, 119, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .settings-sidebar h3 {
+      color: var(--deep-pink);
+      font-family: 'Pacifico', cursive;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .settings-sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .settings-sidebar li {
+      margin-bottom: 10px;
+    }
+
+    .settings-sidebar button {
+      width: 100%;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* MAIN CONTENT AREA */
+    .settings-main {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      background-color: #fff7fa;
+    }
+
+    /* CONTAINER CARD */
+    .settings-container {
+      background-color: #fff;
+      border-radius: 25px;
+      box-shadow: 0 6px 20px rgba(244, 62, 92, 0.15);
+      padding: 40px;
+      width: 80%;
+      max-width: 800px;
+      animation: fadeIn 0.6s ease;
+    }
+
+    /* SECTIONS */
+    .setting-section {
+      display: none;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .setting-section.active {
+      display: block;
+    }
+
+    .setting-section h2 {
+      margin-bottom: 20px;
+    }
+
+    /* FORM ELEMENTS */
+    .settings-container input,
+    .settings-container textarea {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #ffd6eb;
+      transition: 0.2s;
+    }
+
+    .settings-container input:focus,
+    .settings-container textarea:focus {
+      outline: none;
+      border-color: var(--deep-pink);
+      box-shadow: 0 0 5px rgba(244, 62, 92, 0.2);
+    }
+
+     /* password */
+
+     /* PASSWORD SECTION */
+.password-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ffd6eb;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.password-group input:focus {
+  border-color: var(--deep-pink);
+  box-shadow: 0 0 5px rgba(244, 62, 92, 0.2);
+}
+
+.toggle-btn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  color: var(--deep-pink);
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.toggle-btn:hover {
+  color: #f43e5c;
+}
+
+.strength-text {
+  font-size: 0.9rem;
+  margin: 5px 0 15px;
+}
+
+/* Toast Styles */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #fff;
+  padding: 14px 22px;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  font-weight: 500;
+  z-index: 9999;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.toast.success {
+  border-left: 6px solid #6fd37f;
+  color: #2e7d32;
+}
+.toast.error {
+  border-left: 6px solid #ff6f91;
+  color: #b71c1c;
+}
+
+
+    /* ANIMATION */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Include Navbar -->
+
+  <div class="settings-wrapper">
+
+    <!-- Sidebar -->
+    <aside class="settings-sidebar">
+      <h3>Settings ⚙️</h3>
+      <ul>
+        <li><button class="btn-gradient" onclick="showSection('password')">Change Password</button></li>
+        <li><button class="btn-gradient" onclick="showSection('theme')">Theme</button></li>
+        <li><button class="btn-gradient" onclick="showSection('faq')">FAQs</button></li>
+        <li><button class="btn-gradient" onclick="showSection('contact')">Contact</button></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="settings-main">
+      <div class="settings-container">
+
+        <!-- Change Password -->
+        <section id="password" class="setting-section active">
+          <h2>Change Password 🔒</h2>
+          <form id="passwordForm" action="/update-password" method="POST" style="max-width: 450px; margin-top: 20px;">
+
+            <!-- Current Password -->
+            <label>Current Password</label>
+            <div class="password-group">
+              <input type="password" id="currentPassword" name="currentPassword" required>
+              <button type="button" class="toggle-btn" onclick="togglePassword('currentPassword', this)">Show</button>
+            </div>
+
+            <!-- New Password -->
+            <label>New Password</label>
+            <div class="password-group">
+              <input type="password" id="newPassword" name="newPassword" required oninput="checkStrength()">
+              <button type="button" class="toggle-btn" onclick="togglePassword('newPassword', this)">Show</button>
+            </div>
+            <div id="passwordStrength" class="strength-text"></div>
+
+            <!-- Confirm Password -->
+            <label>Confirm New Password</label>
+            <div class="password-group">
+              <input type="password" id="confirmPassword" required>
+              <button type="button" class="toggle-btn" onclick="togglePassword('confirmPassword', this)">Show</button>
+            </div>
+            <div id="passwordMatchMsg" class="strength-text"></div>
+
+            <button type="submit" class="btn-gradient" style="margin-top: 20px; width: 100%;">Update Password</button>
+          </form>
+        </section>
+
+        <!-- Theme -->
+        <section id="theme" class="setting-section">
+          <h2>Theme 🎨</h2>
+          <p>Choose your vibe:</p>
+          <div style="display:flex; gap:15px; margin-top:20px;">
+            <button class="btn-gradient" onclick="applyTheme('light')">Light</button>
+            <button class="btn-gradient" onclick="applyTheme('dark')">Dark</button>
+            <button class="btn-gradient" onclick="applyTheme('pink')">Pink</button>
+          </div>
+        </section>
+
+        <!-- FAQs -->
+        <section id="faq" class="setting-section">
+          <h2>FAQs ❓</h2>
+          <div style="margin-top:20px;">
+            <p><strong>💰 How does splitting work?</strong><br>Enter your group expenses, and the app automatically balances who owes whom.</p>
+            <p><strong>📱 Can I use this on mobile?</strong><br>Absolutely! It’s fully responsive.</p>
+            <p><strong>🔐 Is my data safe?</strong><br>Yes! Your info is encrypted and secure.</p>
+          </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact" class="setting-section">
+          <h2>Contact Us 📩</h2>
+          <form action="/contact" method="POST" style="max-width: 500px; margin-top: 20px;">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" rows="4" placeholder="Your Message..." required></textarea>
+            <button type="submit" class="btn-gradient">Send Message</button>
+          </form>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Sidebar navigation
+    function showSection(sectionId) {
+      document.querySelectorAll('.setting-section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(sectionId).classList.add('active');
+    }
+
+    // Theme switcher (placeholder)
+    function applyTheme(theme) {
+      alert(`Theme switched to ${theme}! 🌈`);
+    }
+
+
+  function togglePassword(fieldId, btn) {
+    const field = document.getElementById(fieldId);
+    if (field.type === "password") {
+      field.type = "text";
+      btn.textContent = "Hide";
+    } else {
+      field.type = "password";
+      btn.textContent = "Show";
+    }
+  }
+
+  function checkStrength() {
+    const password = document.getElementById("newPassword").value;
+    const strengthText = document.getElementById("passwordStrength");
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (/[A-Z]/.test(password)) strength++;
+    if (/[0-9]/.test(password)) strength++;
+    if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+    const messages = ["Weak 💔", "Medium 💛", "Strong 💪", "Very Strong 🔥"];
+    const colors = ["#ff6f91", "#ffb347", "#6fd37f", "#2ecc71"];
+
+    strengthText.textContent = messages[strength - 1] || "";
+    strengthText.style.color = colors[strength - 1] || "";
+  }
+
+  document.getElementById("confirmPassword").addEventListener("input", function () {
+    const newPass = document.getElementById("newPassword").value;
+    const confirmPass = this.value;
+    const msg = document.getElementById("passwordMatchMsg");
+    if (confirmPass === "") msg.textContent = "";
+    else if (confirmPass !== newPass) {
+      msg.textContent = "❌ Passwords do not match";
+      msg.style.color = "#ff6f91";
+    } else {
+      msg.textContent = "✅ Passwords match";
+      msg.style.color = "#6fd37f";
+    }
+  });
+
+  document.getElementById("passwordForm").addEventListener("submit", function (e) {
+    const newPass = document.getElementById("newPassword").value;
+    const confirmPass = document.getElementById("confirmPassword").value;
+    if (newPass !== confirmPass) {
+      e.preventDefault();
+      alert("Passwords do not match!");
+    }
+  });
+
+  // Handle password form submission via fetch
+document.getElementById("passwordForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const newPass = document.getElementById("newPassword").value;
+  const confirmPass = document.getElementById("confirmPassword").value;
+  if (newPass !== confirmPass) {
+    alert("❌ Passwords do not match!");
+    return;
+  }
+
+  const formData = new FormData(this);
+  try {
+    const response = await fetch("/update-password", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      showToast("✅ Password updated successfully!", "success");
+      this.reset();
+      document.getElementById("passwordStrength").textContent = "";
+      document.getElementById("passwordMatchMsg").textContent = "";
+    } else {
+      showToast("❌ " + data.message, "error");
+    }
+  } catch (error) {
+    console.error(error);
+    showToast("⚠️ Something went wrong, please try again.", "error");
+  }
+});
+
+// Toast notification
+function showToast(message, type) {
+  const toast = document.createElement("div");
+  toast.textContent = message;
+  toast.className = `toast ${type}`;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.classList.add("show"), 100);
+  setTimeout(() => {
+    toast.classList.remove("show");
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+  </script>
+</body>
+</html>

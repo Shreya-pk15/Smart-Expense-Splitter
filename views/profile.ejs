@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Expense Splitter</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      background: #fff7fa;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .profile-heading {
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--deep-pink);
+      margin-bottom: 25px;
+      margin-top: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-shadow: 0 1px 4px rgba(255, 182, 193, 0.5);
+    }
+
+    .profile-container {
+      max-width: 700px;
+      margin: 70px auto;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      padding: 2.5rem 3rem;
+      text-align: center;
+      border: 1px solid #ffd6e6;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .profile-container:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(244, 62, 92, 0.15);
+    }
+
+    .profile-avatar {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ee778b;
+      background-color: #ffe6f1;
+      box-shadow: 0 0 12px rgba(244, 62, 92, 0.3);
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .profile-name {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #ee7e91;
+      margin-bottom: 0.3rem;
+      font-family: 'Pacifico', cursive, sans-serif;
+    }
+
+    .profile-username {
+      font-size: 1rem;
+      color: #777;
+      margin-bottom: 0.8rem;
+    }
+
+    .form-group label {
+      font-weight: 500;
+      color: #444;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .form-control,
+    input[type="text"],
+    input[type="email"],
+    input[type="file"] {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid #ffc2d8;
+      transition: all 0.3s;
+      outline: none;
+    }
+
+    .form-control:focus,
+    input:focus {
+      border-color: #f43e5c;
+      box-shadow: 0 0 6px rgba(244, 62, 92, 0.3);
+    }
+
+    .btn-custom {
+      background: #f43e5c;
+      color: white;
+      border-radius: 25px;
+      padding: 12px 20px;
+      font-weight: 600;
+      width: 100%;
+      transition: all 0.3s ease-in-out;
+      border: none;
+    }
+
+    .btn-custom:hover {
+      background: #ff8ba3;
+      transform: translateY(-2px);
+    }
+
+    hr {
+      border: none;
+      border-top: 2px dashed #f9c5d5;
+      margin: 2rem 0;
+    }
+
+    /* Enlarged profile view */
+    .profile-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .profile-overlay img {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #fff;
+      box-shadow: 0 0 25px rgba(255,255,255,0.3);
+      animation: popIn 0.4s ease;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 30px;
+      right: 50px;
+      font-size: 2.2rem;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s, color 0.3s;
+    }
+
+    .close-btn:hover {
+      transform: scale(1.2);
+      color: #f43e5c;
+    }
+
+    .profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Navbar profile avatar (small version) */
+/* === ROOT COLORS === */
+:root {
+  --soft-pink: rgb(240, 176, 189);
+  --deep-pink: rgb(244, 62, 92);
+  --light-bg: #fff7fa;
+  --text-dark: #060606;
+  --text-light: #777;
+}
+
+/* === NAVBAR === */
+nav {
+  background-color: var(--deep-pink);
+  color: var(--soft-pink);
+  box-shadow: 0 3px 10px rgba(248, 6, 119, 0.2);
+}
+
+nav a.nav-link {
+  color: #fff !important;
+  /* font-weight: 600; */
+  transition: color 0.3s ease;
+  background-color: transparent; /* 👈 changed */
+  border-radius: 8px;
+  padding: 10px 15px;
+  width: 97px;
+  text-align: center;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+
+nav a.nav-links {
+  color: #fff !important;
+  /* font-weight: 600; */
+  transition: color 0.3s ease;
+  border-radius: 8px;
+  padding: 7px 7px;
+  width: 65px;
+  margin-right: 4px;
+  text-align: center;
+  display: inline-block;
+  margin-left: 10px;
+  text-decoration: none;
+}
+nav a.nav-link:hover {
+  background-color: rgba(255, 182, 193, 0.2);
+  color: #fff !important;
+}
+
+nav a.nav-link:hover {
+  color: var(--deep-pink) !important;
+}
+
+.navbar-brand {
+  color: #fff !important;
+  /* font-weight: 700; */
+  font-size: 0.7rem;
+}
+
+/* Navbar small avatar */
+.navbar-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid #ff9fcf; /* soft pink border */
+  background-color: #ffe6f1;
+  box-shadow: 0 0 8px rgba(255, 155, 205, 0.3);
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar-avatar:hover {
+  transform: scale(1.08);
+  border-color: #ff6fb5;
+  background-color: #ffd6eb;
+}
+
+/* .navbar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px; /* adjust spacing evenly */
+/* } */
+
+/* .navbar-nav .nav-link {
+  color: #fff !important;
+
+  text-decoration: none;
+  background-color: transparent;
+  padding: 10px 15px;
+  transition: color 0.3s ease;
+} */ */
+
+
+/* === PROFILE DROPDOWN === */
+.profile-avatar:hover {
+  transform: scale(1.08);
+  border-color: #ff6fb5;
+  background-color: #ffd6eb;
+}
+
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.user-name {
+  font-weight: 500;
+  color: #fff;
+  transition: color 0.3s;
+}
+
+.user-name:hover {
+  color: #ffe6f1;
+}
+
+/* Dropdown Menu */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 55px;
+  background: #fff;
+  border-radius: 10px;
+  min-width: 170px;
+  box-shadow: 0 4px 10px rgba(255, 111, 181, 0.2);
+  z-index: 1000;
+  animation: fadeSlide 0.3s ease forwards;
+}
+
+.dropdown-content a,
+.dropdown-content button {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #333;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  transition: background 0.3s, color 0.3s;
+}
+
+.dropdown-content a:hover,
+.dropdown-content button:hover {
+  background-color: #ffe6f1;
+  color: #ff4081;
+}
+
+.dropdown-logout {
+  color: #e63946;
+  font-weight: 600;
+}
+
+.show {
+  display: block !important;
+}
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .profile-avatar {
+    width: 36px;
+    height: 36px;
+  }
+  .dropdown-content {
+    right: -20px;
+    top: 50px;
+  }
+}
+
+.greeting {
+  font-weight: 600;
+  color: white;
+  margin-left: 10px;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.greeting {
+  font-weight: 600;
+  color: white;
+  margin-left: 10px;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+  </style>
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg py-3">
+  <div class="container">
+    <h4 class="fw-bold">Smart Expense Splitter</h4>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <% if (!user) { %>
+          <li class="nav-item"><a class="nav-link" href="/register">Sign Up</a></li>
+          <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+        <% } else { %>
+          <li class="nav-item"><a class="nav-links active" href="/home">Home</a></li>
+          <li class="nav-item"><a class="nav-links" href="#">Groups</a></li>
+          <li class="nav-item"><a class="nav-links" href="/expenses">Expenses</a></li>
+          <li class="nav-item"><a class="nav-links" href="/about">About</a></li>
+
+          <!-- Profile Dropdown -->
+          <li class="nav-item dropdown ms-3">
+            <div class="dropdown">
+              <div class="profile-trigger" onclick="toggleDropdown()">
+                <img
+  src="<%= user.profilePic
+    ? '/uploads/' + user.profilePic
+    : 'https://i.pinimg.com/1200x/8b/84/17/8b841799752db5b6e1aa1aa56fe737db.jpg' %>"
+  alt="Profile"
+  class="navbar-avatar"
+/>
+
+                <span class="user-name"><%= user.name %></span>
+              </div>
+
+              <div id="profileDropdown" class="dropdown-content shadow-lg">
+                <a href="/profile"><i class="bi bi-person-circle"></i> Profile</a>
+                <a href="/setting"><i class="bi bi-gear"></i> Settings</a>
+                <form id="logoutForm" action="/logout" method="POST" style="display:inline;">
+                  <button type="button" class="dropdown-logout" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                  </button>
+                </form>
+              </div>
+            </div>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  <!-- Profile Container -->
+  <div class="profile-container">
+    <h2 class="profile-heading">Profile</h2>
+
+    <img src="/uploads/<%= user.profilePic || (user.username + '.jpg') %>"
+         onerror="this.onerror=null; this.src='/images/default-avatar.jpg';"
+         alt="Profile"
+         class="profile-avatar"
+         onclick="enlargeProfile(this.src)">
+
+    <div class="profile-name" id="displayName"><%= user.name || user.username %></div>
+
+    <form action="/profile/update" method="POST" enctype="multipart/form-data" class="text-start mt-4">
+      <div class="form-group mb-3">
+        <label>Your Name</label>
+        <input type="text" name="name" class="form-control" value="<%= user.name || '' %>" placeholder="Your name" required>
+      </div>
+
+      <div class="form-group mb-3">
+        <label>Username</label>
+        <input type="text" name="username" class="form-control" value="<%= user.username %>" required>
+      </div>
+
+      <div class="form-group mb-3">
+        <label>Email</label>
+        <input type="email" name="email" class="form-control" value="<%= user.email %>" readonly>
+      </div>
+
+      <div class="form-group mb-3">
+        <label>Phone Number</label>
+        <input type="text" id="phoneInput" name="phone" class="form-control" value="<%= user.phone || '' %>" placeholder="Enter phone number">
+      </div>
+
+      <div class="form-group mb-3">
+        <label>Profile Picture</label>
+        <input type="file" name="profilePic" class="form-control">
+      </div>
+
+      <button type="submit" class="btn btn-custom mt-3">Save Changes</button>
+    </form>
+
+    <hr>
+  </div>
+
+  <!-- Logout Confirmation Modal -->
+<!-- 🌸 Aesthetic Pink Logout Confirmation Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content logout-modal text-center shadow-lg">
+      <div class="modal-header border-0 justify-content-center">
+        <h5 class="modal-title fw-bold fs-4 logout-title" id="logoutModalLabel">
+          Are you sure you want to logout?
+        </h5>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-4">You’ll be signed out from Smart Expense Splitter 💗</p>
+        <div class="d-flex justify-content-center gap-3">
+          <button type="button" class="btn cancel-btn" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn confirm-logout-btn" onclick="logoutUser()">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Enlarged Profile Overlay -->
+  <div class="profile-overlay" id="profileOverlay">
+    <span class="close-btn" onclick="closeOverlay()">×</span>
+    <img id="overlayImg" src="">
+  </div>
+
+  <script>
+    function enlargeProfile(src) {
+      const overlay = document.getElementById("profileOverlay");
+      const overlayImg = document.getElementById("overlayImg");
+      overlayImg.src = src;
+      overlay.style.display = "flex";
+    }
+
+    function closeOverlay() {
+      document.getElementById("profileOverlay").style.display = "none";
+    }
+
+    document.getElementById("phoneInput").addEventListener("input", function () {
+      this.value = this.value.replace(/[^0-9]/g, ""); // allow only digits
+    });
+  function toggleDropdown() {
+    document.getElementById("profileDropdown").classList.toggle("show");
+  }
+
+  // Close dropdown when clicking outside
+  window.onclick = function(event) {
+    if (!event.target.closest(".profile-trigger")) {
+      document.getElementById("profileDropdown").classList.remove("show");
+    }
+  };
+
+  function logoutUser() {
+    document.getElementById("logoutForm").submit();
+  }
+  </script>
+</body>
+</html>

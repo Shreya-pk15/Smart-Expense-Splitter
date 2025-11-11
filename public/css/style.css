@@ -23,8 +23,15 @@ h2 {
   color: var(--deep-pink);
 }
 
+h4 {
+  color: var(--light-bg);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 700;
+  font-weight: bold;
+}
+
 /* === NAVBAR === */
-nav {
+nav{
   background-color: var(--deep-pink);
   color: var(--soft-pink);
   box-shadow: 0 3px 10px rgba(248, 6, 119, 0.2);
@@ -32,12 +39,39 @@ nav {
 
 nav a.nav-link {
   color: #fff !important;
-  font-weight: 500;
+  font-weight: 600;
   transition: color 0.3s ease;
+  background-color: rgb(239, 148, 166);
+  border-radius: 8px;
+  padding: 10px 15px;
+  width: 97px;
+  text-align: center;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+nav a.nav-links {
+  color: #fff !important;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  /* background-color: rgb(239, 148, 166); */
+  border-radius: 8px;
+  padding: 7px 7px;
+  width: 65px;
+  margin-right: auto;
+  text-align: center;
+  display: inline-block;
+  margin-left: 10px;
+  text-decoration: none;
+}
+
+nav a.nav-links:hover {
+  color: var(--soft-pink) !important;
+  /* background-color: rgb(255, 204, 221); */
 }
 
 nav a.nav-link:hover {
-  color: var(--soft-pink) !important;
+  color: var(--deep-pink) !important;
 }
 
 .navbar-brand {
@@ -212,4 +246,241 @@ nav a.nav-link:hover {
   text-align: center;
   font-size: 0.9rem;
   letter-spacing: 0.5px;
+}
+
+/* The groups */
+/* Horizontal List Group Styles */
+.list-group-item {
+  background: #fff;
+  border: 1px solid #f3d1f4;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.hover-list:hover {
+  background: #ffe6f9;
+  transform: scale(1.01);
+}
+
+.btn-gradient {
+  background: linear-gradient(90deg, #ff8ae2, #ff4dd2);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  transition: 0.3s ease;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(90deg, #ff4dd2, #ff8ae2);
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.animate-fade {
+  opacity: 1;
+  transition: opacity 0.8s ease;
+}
+
+.animate-fade.fade {
+  opacity: 0;
+}
+
+.navbar {
+  background: #f54d68;
+  padding: 0.8rem 2rem;
+}
+
+.nav-links a {
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 10px;
+  text-decoration: none;
+  margin: 0 6px;
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.greeting {
+  font-weight: 600;
+  color: white;
+  margin-left: 10px;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Profile Dropdown Styling */
+.profile-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid #ff9fcf; /* soft pink border */
+  background-color: #ffe6f1;
+  box-shadow: 0 0 8px rgba(255, 155, 205, 0.3);
+  transition: all 0.3s ease-in-out;
+}
+
+.profile-avatar:hover {
+  transform: scale(1.08);
+  border-color: #ff6fb5;
+  background-color: #ffd6eb;
+}
+
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.user-name {
+  font-weight: 500;
+  color: #444;
+  transition: color 0.3s;
+}
+
+.user-name:hover {
+  color: #ff6fb5;
+}
+
+/* Dropdown Menu */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 55px;
+  background: #fff;
+  border-radius: 10px;
+  min-width: 170px;
+  box-shadow: 0 4px 10px rgba(255, 111, 181, 0.2);
+  z-index: 1000;
+  animation: fadeSlide 0.3s ease forwards;
+}
+
+.dropdown-content a,
+.dropdown-content button {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #333;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  transition: background 0.3s, color 0.3s;
+}
+
+.dropdown-content a:hover,
+.dropdown-content button:hover {
+  background-color: #ffe6f1;
+  color: #ff4081;
+}
+
+.dropdown-logout {
+  color: #e63946;
+  font-weight: 600;
+}
+
+.show {
+  display: block !important;
+}
+
+/* Fancy dropdown animation */
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .profile-avatar {
+    width: 36px;
+    height: 36px;
+  }
+  .dropdown-content {
+    right: -20px;
+    top: 50px;
+  }
+}
+
+/* 🌸 Pink Themed Logout Modal */
+.logout-modal {
+  border: none;
+  border-radius: 25px;
+  background: rgba(255, 245, 248, 0.9);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 20px rgba(244, 62, 92, 0.2);
+  animation: fadeInUp 0.4s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.logout-title {
+  color: var(--deep-pink);
+  font-family: 'Pacifico', cursive;
+  letter-spacing: 0.5px;
+}
+
+.cancel-btn {
+  background: #ffe6f1;
+  border: none;
+  border-radius: 20px;
+  color: var(--deep-pink);
+  font-weight: 600;
+  padding: 8px 24px;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(247, 178, 217, 0.3);
+}
+
+.cancel-btn:hover {
+  background: #ffd6eb;
+  transform: scale(1.05);
+}
+
+.confirm-logout-btn {
+  background: linear-gradient(90deg, var(--soft-pink), var(--deep-pink));
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 12px rgba(248, 6, 119, 0.25);
+}
+
+.confirm-logout-btn:hover {
+  background: linear-gradient(90deg, var(--deep-pink), var(--soft-pink));
+  transform: scale(1.08);
+}
+
+.logout-modal p {
+  color: var(--text-light);
+  font-size: 1rem;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
