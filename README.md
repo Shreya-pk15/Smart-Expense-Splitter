@@ -1,7 +1,7 @@
 # 💸 Smart Expense Splitter
 
 A friendly full-stack web app that makes splitting group expenses effortless and fun!
-Built using **Node.js**, **Express**, and **MongoDB**, styled with a **soft pink aesthetic UI**. 🌸
+Built using **Node.js**, **Express**, and **MongoDB**, the app has a pleasant, soft-pink color scheme to make the experience feel friendly and inviting 🌸
 
 It lets users create groups, add shared expenses, track who owes what, change passwords, and contact support — all in a secure, responsive design.
 
