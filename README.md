@@ -13,7 +13,7 @@ Welcome to Smart Expense Splitter, a full-stack web application designed to make
 - Responsive UI using EJS templates, Bootstrap & custom pink CSS
 
 ## Tech Stack
-- Backend: Node.js (v18+), Express.js, MongoDB (Mongoose), express-session, bcrypt, dotenv, multer, (Razorpay optional)
+
 - Frontend: EJS templates, HTML, CSS, Bootstrap, Vanilla JS
 - Storage: Local `uploads/` for avatars (consider S3/Cloudinary for production)
 
