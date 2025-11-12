@@ -87,9 +87,9 @@ nav a.nav-link:hover {
 
 /* === BUTTONS === */
 .btn-gradient {
-  background: linear-gradient(90deg, var(--soft-pink), var(--deep-pink));
+  background: linear-gradient(135deg, #ff5f85, #d81b60);
   border: none;
-  color: white;
+  color: #fff !important;
   border-radius: 50px;
   padding: 0.6rem 1.6rem;
   font-weight: 600;
