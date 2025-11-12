@@ -21,98 +21,95 @@
 
   <style>
 :root {
-  --primary: rgb(244, 62, 92);
-  --primary-hover: rgb(244, 62, 92);
-  --bg-light: #fff5f8;
+  --primary: #f43e5c;
+  --primary-hover: #e03553;
+  --bg-light: #fff7f9;
   --bg-card: #ffffff;
-  --border: #f0d6de;
+  --border: #f2c8d2;
   --text: #2b2b2b;
   --muted: #757575;
   --radius: 14px;
-  --shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+  --shadow: 0 6px 18px rgba(233, 30, 99, 0.08);
   --transition: all 0.3s ease;
-  --sidebar-width: 260px;
+  --sidebar-width: 280px;
   --font: 'Poppins', sans-serif;
 }
 
-/* --- BASE PAGE --- */
+/* 🌸 Base */
 body {
   font-family: var(--font);
   background: var(--bg-light);
-  margin: 0;
   color: var(--text);
+  margin: 0;
+  overflow-x: hidden;
 }
 
-/* --- WRAPPER --- */
+/* 🌸 Wrapper */
 .settings-wrapper {
   display: flex;
   min-height: 100vh;
-  overflow: hidden;
 }
 
-/* --- SIDEBAR --- */
+/* 🌸 Sidebar */
 .settings-sidebar {
-  margin-top: 70px;
-  width: var(--sidebar-width);
-  background: linear-gradient(180deg, #ffeef5, #fff);
-  border-right: 1px solid var(--border);
-  box-shadow: 4px 0 10px rgba(233, 30, 99, 0.08);
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding: 25px 20px;
   position: fixed;
   top: 0;
-  bottom: 0;
   left: 0;
-  overflow-y: auto;
+  bottom: 0;
+  width: var(--sidebar-width);
+  background: linear-gradient(180deg, #ffe5ef, #fff);
+  border-right: 1px solid var(--border);
+  box-shadow: 3px 0 8px rgba(244, 62, 92, 0.08);
+  padding: 25px 20px;
+  margin-top: 70px;
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.4s ease;
 }
 
 .settings-sidebar h3 {
   text-align: center;
   font-family: 'Pacifico', cursive;
   color: var(--primary);
+  font-size: 1.9rem;
   margin-bottom: 30px;
-  font-size: 1.8rem;
 }
 
 .settings-sidebar ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
 .settings-sidebar button {
   width: 100%;
   background: #fff;
   border: 1px solid var(--border);
-  text-align: left;
-  padding: 14px 18px;
   border-radius: var(--radius);
   font-size: 1rem;
   color: var(--primary);
   font-weight: 500;
+  padding: 13px 16px;
   margin-bottom: 10px;
-  transition: var(--transition);
+  text-align: left;
   cursor: pointer;
+  transition: var(--transition);
 }
 
 .settings-sidebar button:hover,
 .settings-sidebar button.active {
   background: linear-gradient(90deg, var(--primary), var(--primary-hover));
   color: #fff;
-  box-shadow: 0 3px 10px rgba(233, 30, 99, 0.25);
+  box-shadow: 0 3px 12px rgba(244, 62, 92, 0.3);
   transform: translateX(5px);
 }
 
-/* --- MAIN AREA --- */
+/* 🌸 Main Section */
 .settings-main {
   flex-grow: 1;
-  margin-left: var(--sidebar-width);
-  padding: 60px 80px;
+  margin-left: 260px;
+  padding: 60px 70px;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
   background: var(--bg-light);
 }
 
@@ -122,16 +119,16 @@ body {
   box-shadow: var(--shadow);
   padding: 50px;
   width: 100%;
-  max-width: 950px;
+  max-width: 800px;
+  height: 540px;
   animation: fadeIn 0.5s ease;
 }
 
-/* --- SECTION --- */
+/* 🌸 Sections */
 .setting-section {
   display: none;
   animation: fadeIn 0.6s ease;
 }
-
 .setting-section.active {
   display: block;
 }
@@ -144,28 +141,27 @@ body {
   text-align: center;
 }
 
-/* --- FORM ELEMENTS --- */
+/* 🌸 Inputs & Textareas */
 .settings-container input,
 .settings-container textarea {
   width: 100%;
-  margin-bottom: 18px;
   padding: 12px 16px;
+  border: 1.8px solid var(--border);
   border-radius: var(--radius);
-  border: 1px solid var(--border);
+  margin-bottom: 16px;
   transition: var(--transition);
   font-size: 1rem;
   background: #fff;
-  color: var(--text);
 }
 
 .settings-container input:focus,
 .settings-container textarea:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 8px rgba(233, 30, 99, 0.2);
+  box-shadow: 0 0 6px rgba(244, 62, 92, 0.2);
   outline: none;
 }
 
-/* --- PASSWORD FIELD --- */
+/* 🌸 Password toggle */
 .password-group {
   position: relative;
 }
@@ -175,12 +171,12 @@ body {
   right: 15px;
   top: 50%;
   transform: translateY(-50%);
-  background: none;
   border: none;
+  background: none;
   color: var(--primary);
   font-weight: 600;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: var(--transition);
 }
 
 .toggle-btn:hover {
@@ -189,32 +185,50 @@ body {
 
 .strength-text {
   font-size: 0.9rem;
-  margin-top: -6px;
-  margin-bottom: 10px;
   color: var(--muted);
+  margin-top: -5px;
+  margin-bottom: 10px;
   font-weight: 500;
 }
 
-/* --- FAQ --- */
+/* 🌸 Buttons */
+.btn-gradient {
+  background: linear-gradient(90deg, var(--primary), var(--primary-hover));
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  transition: var(--transition);
+  width: 100%;
+  box-shadow: 0 3px 10px rgba(244, 62, 92, 0.25);
+}
+
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(244, 62, 92, 0.3);
+}
+
+/* 🌸 FAQ */
 .faq-container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 .faq-item {
   background: #fff;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-  padding: 18px 20px;
-  transition: var(--transition);
+  padding: 16px 18px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
   cursor: pointer;
+  transition: var(--transition);
 }
 
 .faq-item:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
 }
 
 .faq-question {
@@ -223,40 +237,22 @@ body {
   align-items: center;
   color: var(--primary);
   font-weight: 600;
-  font-size: 1.05rem;
 }
 
 .faq-answer {
   max-height: 0;
   overflow: hidden;
+  transition: all 0.4s ease;
   color: var(--text);
   line-height: 1.6;
-  transition: max-height 0.4s ease, padding 0.3s ease;
 }
 
 .faq-item.active .faq-answer {
-  max-height: 200px;
+  max-height: 300px;
   padding-top: 8px;
 }
 
-/* --- BUTTONS --- */
-.btn-gradient {
-  background: linear-gradient(90deg, var(--primary), var(--primary-hover));
-  border: none;
-  color: #fff;
-  border-radius: var(--radius);
-  padding: 12px 15px;
-  font-weight: 600;
-  width: 100%;
-  transition: var(--transition);
-}
-
-.btn-gradient:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(233, 30, 99, 0.25);
-}
-
-/* --- TOAST --- */
+/* 🌸 Toast Notification */
 .toast {
   position: fixed;
   bottom: 30px;
@@ -268,26 +264,29 @@ body {
   opacity: 0;
   transform: translateY(20px);
   transition: var(--transition);
-  font-weight: 500;
   z-index: 9999;
+  font-weight: 500;
 }
+
 .toast.show {
   opacity: 1;
   transform: translateY(0);
 }
+
 .toast.success {
-  border-left: 6px solid #4caf50;
-  color: #2e7d32;
-}
-.toast.error {
-  border-left: 6px solid #f44336;
-  color: #b71c1c;
+  border-left: 5px solid #4caf50;
+  color: #256029;
 }
 
-/* --- NAVBAR --- */
+.toast.error {
+  border-left: 5px solid #f44336;
+  color: #a21b1b;
+}
+
+/* 🌸 Navbar */
 nav {
   background: linear-gradient(90deg, var(--primary), var(--primary-hover));
-  box-shadow: 0 3px 10px rgba(248, 6, 119, 0.2);
+  box-shadow: 0 3px 10px rgba(244, 62, 92, 0.25);
 }
 
 nav a.nav-links {
@@ -308,7 +307,7 @@ nav a.nav-links:hover {
   color: #fff !important;
 }
 
-/* Profile Dropdown */
+/* 🌸 Profile Dropdown */
 .profile-avatar {
   width: 40px;
   height: 40px;
@@ -318,123 +317,120 @@ nav a.nav-links:hover {
   cursor: pointer;
   transition: transform 0.2s ease;
 }
+
 .profile-avatar:hover {
   transform: scale(1.05);
 }
+
 .dropdown-content {
   display: none;
   position: absolute;
   right: 0;
   background-color: #fff;
   min-width: 160px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
   border-radius: 10px;
-  z-index: 1;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  z-index: 1000;
   overflow: hidden;
 }
-.dropdown-content a, .dropdown-content button {
+
+.dropdown-content a,
+.dropdown-content button {
   color: #333;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
-  width: 100%;
-  text-align: left;
   background: none;
   border: none;
-  cursor: pointer;
+  width: 100%;
+  text-align: left;
   font-size: 1rem;
   transition: background-color 0.2s ease;
 }
-.dropdown-content a:hover, .dropdown-content button:hover {
-  background-color: #f1f1f1;
+
+.dropdown-content a:hover,
+.dropdown-content button:hover {
+  background-color: #f8f8f8;
 }
+
 .dropdown.show .dropdown-content {
   display: block;
 }
 
-/* --- RESPONSIVE --- */
+/* 🌸 Responsive */
 @media (max-width: 992px) {
   .settings-wrapper {
     flex-direction: column;
   }
+
   .settings-sidebar {
-    width: 100%;
+    position: relative;
     flex-direction: row;
     justify-content: space-evenly;
-    border-bottom: 1px solid var(--border);
-    border-right: none;
+    width: 100%;
     margin-top: 0;
-    position: relative;
+    border-bottom: 1px solid var(--border);
   }
+
   .settings-sidebar h3 {
     display: none;
   }
+
   .settings-main {
     margin-left: 0;
     padding: 40px 25px;
   }
+
   .settings-container {
-    padding: 35px 25px;
+    padding: 30px 25px;
   }
 }
 
+/* 🌸 Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-15px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+/* --- Buttons --- */
+.btn-gradient {
+  background: linear-gradient(135deg, #e91e63, #ff4081);
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 50px;
+  padding: 10px 0;
+  box-shadow: 0 4px 10px rgba(233, 30,
+  99, 0.3);
+  transition: all 0.3s ease;
+}
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #d81b60, #ff1c70);
+  box-shadow: 0 6px 14px rgba(233, 30, 99, 0.35);
+  transform: translateY(-2px);
+}
+/* --- Form Controls --- */
+.form-control {
+  border-radius: 50px;
+  border: 1.5px solid #f8bbd0;
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+}
+.form-control:focus {
+  border-color: #e91e63;
+  box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.2);
 }
  </style>
 </head>
 
 <body>
   <!-- Include Navbar -->
-  <nav class="navbar navbar-expand-lg py-3">
-  <div class="container">
-    <h4 class="fw-bold">Smart Expense Splitter</h4>
+  <%- include('./partials/navbar', { activePage: 'settings', userId: user ? user._id : null }) %>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto align-items-center">
-        <% if (!user) { %>
-          <li class="nav-item"><a class="nav-link" href="/register">Sign Up</a></li>
-          <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-        <% } else { %>
-          <li class="nav-item"><a class="nav-links active" href="/home">Home</a></li>
-          <li class="nav-item"><a class="nav-links" href="/groups">Groups</a></li>
-          <li class="nav-item"><a class="nav-links" href="/expenses">Expenses</a></li>
-          <li class="nav-item"><a class="nav-links" href="/about">About</a></li>
-
-          <!-- Profile Dropdown -->
-          <li class="nav-item dropdown ms-3">
-            <div class="dropdown">
-              <div class="profile-trigger" onclick="toggleDropdown()">
-                <img
-                  src="<%= user.profilePic
-                    ? '/uploads/' + user.profilePic
-                    : 'https://i.pinimg.com/1200x/8b/84/17/8b841799752db5b6e1aa1aa56fe737db.jpg' %>"
-                  alt="Profile"
-                  class="profile-avatar"
-                />
-              </div>
-
-              <div id="profileDropdown" class="dropdown-content shadow-lg">
-                <a href="/profile"><i class="bi bi-person-circle"></i> Profile</a>
-                <a href="/setting"><i class="bi bi-gear"></i> Settings</a>
-                <form id="logoutForm" action="/logout" method="POST" style="display:inline;">
-                  <button type="button" class="dropdown-logout" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                    <i class="bi bi-box-arrow-right"></i> Logout
-                  </button>
-                </form>
-              </div>
-            </div>
-          </li>
-        <% } %>
-      </ul>
-    </div>
-  </div>
-</nav>
   <!-- Settings Wrapper -->
   <div class="settings-wrapper">
     <!-- Sidebar -->
@@ -502,53 +498,132 @@ nav a.nav-links:hover {
           </div>
         </section>
 
-        <!-- Contact Section -->
-        <section id="contact" class="setting-section">
-          <h2>Contact Us 📬</h2>
-          <p style="text-align:center;color:var(--muted);margin-bottom:20px;">We’d love to hear your feedback!</p>
-          <form id="contactForm" style="max-width:500px;margin:auto;">
-            <input type="text" id="name" placeholder="Your Name" required />
-            <input type="email" id="email" placeholder="Your Email" required />
-            <textarea id="message" rows="4" placeholder="Type your message..." required></textarea>
-            <button type="submit" class="btn-gradient mt-3">Send Message 💌</button>
-          </form>
-        </section>
-      </div>
-    </main>
-  </div>
+<!-- Contact Section -->
+<section id="contact" class="setting-section">
+  <h2>Contact Us 📬</h2>
+  <p style="text-align:center;color:var(--muted);margin-bottom:20px;">
+    We’d love to hear your feedback!
+  </p>
+  <form id="contactForm" style="max-width:500px;margin:auto;">
+    <input type="text" id="name" name="name" placeholder="Your Name" required />
+    <input type="email" id="email" name="email" placeholder="Your Email" required />
+    <textarea id="message" name="message" rows="4" placeholder="Type your message..." required></textarea>
+    <button type="submit" class="btn-gradient mt-3">Send Message 💌</button>
+  </form>
+</section>
 
-  <script>
-function showSection(id){
-  document.querySelectorAll('.setting-section').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.settings-sidebar button').forEach(b=>b.classList.remove('active'));
-  event.target.classList.add('active');
-}
-function togglePassword(id,btn){
-  const f=document.getElementById(id);
-  f.type=f.type==="password"?"text":"password";
-  btn.textContent=f.type==="password"?"Show":"Hide";
-}
-function checkStrength(){
-  const p=document.getElementById("newPassword").value;
-  const t=document.getElementById("passwordStrength");
-  let s=0;
-  if(p.length>=8)s++;
-  if(/[A-Z]/.test(p))s++;
-  if(/[0-9]/.test(p))s++;
-  if(/[^A-Za-z0-9]/.test(p))s++;
-  const msg=["Weak 💔","Medium 💛","Strong 💪","Very Strong 🔥"];
-  const col=["#ff6f91","#ffb347","#6fd37f","#2ecc71"];
-  t.textContent=msg[s-1]||"";
-  t.style.color=col[s-1]||"";
-}
-document.getElementById("confirmPassword").addEventListener("input",function(){
-  const newP=document.getElementById("newPassword").value;
-  const msg=document.getElementById("passwordMatchMsg");
-  msg.textContent=this.value===newP?"✅ Passwords match":"❌ Passwords do not match";
-  msg.style.color=this.value===newP?"#6fd37f":"#ff6f91";
+<!-- Toast notification -->
+<div id="toast" class="toast"></div>
+
+<script>
+  function showSection(id) {
+    document.querySelectorAll('.setting-section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.settings-sidebar button').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  function togglePassword(id, btn) {
+    const f = document.getElementById(id);
+    f.type = f.type === "password" ? "text" : "password";
+    btn.textContent = f.type === "password" ? "Show" : "Hide";
+  }
+
+  function checkStrength() {
+    const p = document.getElementById("newPassword").value;
+    const t = document.getElementById("passwordStrength");
+    let s = 0;
+    if (p.length >= 8) s++;
+    if (/[A-Z]/.test(p)) s++;
+    if (/[0-9]/.test(p)) s++;
+    if (/[^A-Za-z0-9]/.test(p)) s++;
+    const msg = ["Weak 💔", "Medium 💛", "Strong 💪", "Very Strong 🔥"];
+    const col = ["#ff6f91", "#ffb347", "#6fd37f", "#2ecc71"];
+    t.textContent = msg[s - 1] || "";
+    t.style.color = col[s - 1] || "";
+  }
+
+  document.getElementById("confirmPassword")?.addEventListener("input", function () {
+    const newP = document.getElementById("newPassword").value;
+    const msg = document.getElementById("passwordMatchMsg");
+    msg.textContent = this.value === newP ? "✅ Passwords match" : "❌ Passwords do not match";
+    msg.style.color = this.value === newP ? "#6fd37f" : "#ff6f91";
+  });
+
+  document.querySelectorAll('.faq-item').forEach(f =>
+    f.addEventListener('click', () => f.classList.toggle('active'))
+  );
+
+  // 💌 Contact form logic
+  const form = document.getElementById("contactForm");
+  const toast = document.getElementById("toast");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const data = {
+      name: document.getElementById("name").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      message: document.getElementById("message").value.trim(),
+    };
+
+    try {
+      const res = await fetch("/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+
+      if (result.success) {
+        showToast("Message sent successfully! 💌", "success");
+        form.reset();
+      } else {
+        showToast(result.message || "Something went wrong 😢", "error");
+      }
+    } catch (err) {
+      console.error(err);
+      showToast("Server error. Try again later.", "error");
+    }
+  });
+
+  function showToast(message, type) {
+    toast.textContent = message;
+    toast.className = "toast show " + type;
+    setTimeout(() => toast.className = "toast", 3000);
+  }
+
+document.getElementById("passwordForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const currentPassword = document.getElementById("currentPassword").value;
+  const newPassword = document.getElementById("newPassword").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
+
+  if (newPassword !== confirmPassword) {
+    document.getElementById("passwordMatchMsg").textContent = "Passwords do not match!";
+    return;
+  }
+
+  try {
+    const res = await fetch("/update-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ currentPassword, newPassword }),
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      showToast("✅ Password updated successfully! Redirecting...", "success");
+      setTimeout(() => window.location.href = "/login", 1500);
+    } else {
+      alert("⚠️ " + data.message);
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong. Please try again.");
+  }
 });
-document.querySelectorAll('.faq-item').forEach(f=>f.addEventListener('click',()=>f.classList.toggle('active')));
-  </script>
+</script>
 </body>
 </html>

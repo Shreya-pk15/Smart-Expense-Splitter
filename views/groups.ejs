@@ -3,10 +3,145 @@
 <head>
   <%- include('./partials/head') %>
   <title>Smart Expense Splitter</title>
+<style>/* 🌸 Smart Expense Splitter - Groups Page Styling 🌸 */
+
+body {
+  background: #fffafc;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+}
+
+/* --- Heading & Layout --- */
+h2 {
+  font-weight: 600;
+  font-size: 2.1rem;
+  color: rgb(230, 120, 142);
+  letter-spacing: 2px;
+  font-family: 'Pacifico', cursive, sans-serif;
+}
+
+.text-muted {
+  color: #777 !important;
+}
+
+/* --- Gradient Button --- */
+.btn-gradient {
+  background: linear-gradient(135deg, #e91e63, #ff80ab);
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 50px;
+  padding: 10px 20px;
+  transition: 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(233, 30, 99, 0.3);
+}
+
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #d81b60, #ff4081);
+  box-shadow: 0 6px 15px rgba(233, 30, 99, 0.4);
+}
+
+/* --- Group Cards --- */
+.card {
+  border: none;
+  border-radius: 18px;
+  transition: all 0.3s ease;
+  background: #fff;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(233, 30, 99, 0.15);
+}
+
+.card-title {
+  color: #e91e63;
+  font-weight: 600;
+}
+
+.btn-outline-pink {
+  border: 2px solid #e91e63;
+  color: #e91e63;
+  border-radius: 50px;
+  font-weight: 500;
+  padding: 8px 16px;
+  transition: 0.3s ease;
+}
+
+.btn-outline-pink:hover {
+  background-color: #e91e63;
+  color: #fff;
+}
+
+/* --- Empty State Alert --- */
+.alert {
+  border-radius: 15px;
+  background-color: #ffe5ef;
+  color: #e91e63;
+  border: none;
+  font-weight: 500;
+}
+
+.alert a {
+  color: #d81b60;
+  text-decoration: underline;
+}
+
+/* --- Logout Modal --- */
+.logout-modal {
+  border-radius: 25px;
+  background: #fffafc;
+  padding: 25px;
+  border: 1px solid #fce4ec;
+}
+
+.logout-title {
+  color: #e91e63;
+}
+
+.cancel-btn {
+  background-color: #f8bbd0;
+  color: #fff;
+  border-radius: 50px;
+  font-weight: 600;
+  padding: 8px 20px;
+  border: none;
+}
+
+.cancel-btn:hover {
+  background-color: #f48fb1;
+}
+
+.confirm-logout-btn {
+  background: linear-gradient(135deg, #e91e63, #ff80ab);
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 50px;
+  padding: 8px 20px;
+  box-shadow: 0 4px 10px rgba(233, 30, 99, 0.3);
+}
+
+.confirm-logout-btn:hover {
+  background: linear-gradient(135deg, #d81b60, #ff4081);
+  transform: translateY(-1px);
+}
+
+/* --- Responsive Tweaks --- */
+@media (max-width: 768px) {
+  h2 {
+    font-size: 1.6rem;
+  }
+  .btn-gradient {
+    width: 100%;
+  }
+}
+</style>
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-  <%- include('./partials/navbar', { page: 'groups', userId: userId }) %>
+  <%- include('./partials/navbar', { activePage: 'groups', userId: userId }) %>
 
   <div class="container my-5">
     <div class="row mb-4 align-items-center">

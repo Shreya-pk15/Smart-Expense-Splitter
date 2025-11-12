@@ -3,58 +3,269 @@
 <head>
   <%- include('./partials/head') %>
   <title>Smart Expense Splitter</title>
+  <style>
+/* 🌸 Smart Expense Splitter - Group Details Page (Pro Revamp) 🌸 */
+
+body {
+  background: linear-gradient(180deg, #fff0f6 0%, #ffffff 100%);
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* --- Page Header --- */
+h2 {
+  font-weight: 600;
+  font-size: 2.1rem;
+  color: rgb(230, 120, 142);
+  letter-spacing: 2px;
+  font-family: 'Pacifico', cursive, sans-serif;
+}
+
+p.text-muted {
+  color: #777 !important;
+  margin-bottom: 1rem;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(233, 30, 99, 0.3),
+    rgba(255, 255, 255, 0)
+  );
+  margin: 2rem 0;
+}
+
+/* --- Member List --- */
+ul.list-unstyled {
+  padding-left: 0;
+}
+
+ul.list-unstyled li {
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 10px rgba(233, 30, 99, 0.08);
+  transition: all 0.25s ease;
+}
+
+ul.list-unstyled li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(233, 30, 99, 0.12);
+}
+
+ul.list-unstyled li span {
+  font-weight: 500;
+  color: #444;
+}
+
+/* --- Optional Member Avatars --- */
+ul.list-unstyled li::before {
+  content: "👤";
+  font-size: 1.2rem;
+  background: linear-gradient(135deg, #f8bbd0, #fce4ec);
+  color: #e91e63;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(233, 30, 99, 0.1);
+}
+
+/* --- Add Member Form --- */
+form {
+  background-color: #fff;
+  padding: 1.8rem;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(233, 30, 99, 0.08);
+  transition: transform 0.3s ease;
+}
+
+form:hover {
+  transform: translateY(-3px);
+}
+
+label.form-label {
+  color: #e91e63;
+  font-weight: 600;
+}
+
+.form-control {
+  border-radius: 12px;
+  border: 1.5px solid #f8bbd0;
+  padding: 10px 14px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #e91e63;
+  box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.25);
+}
+
+/* --- Buttons --- */
+.btn-gradient {
+  background: linear-gradient(135deg, #e91e63, #ff80ab);
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 50px;
+  padding: 10px 24px;
+  width: auto;
+  box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #d81b60, #ff4081);
+  box-shadow: 0 6px 18px rgba(233, 30, 99, 0.4);
+  transform: translateY(-2px);
+}
+
+/* --- Expenses --- */
+.list-group-item {
+  border: none;
+  border-radius: 14px;
+  background: #fff;
+  margin-bottom: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 5px 12px rgba(233, 30, 99, 0.08);
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.list-group-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #e91e63, #ff80ab);
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
+  opacity: 0.9;
+}
+
+.list-group-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(233, 30, 99, 0.12);
+}
+
+.list-group-item h6 {
+  color: #333;
+  font-weight: 600;
+}
+
+.text-pink {
+  color: #e91e63 !important;
+  font-weight: 600;
+}
+
+/* --- Alert Styling --- */
+.alert {
+  border: none;
+  border-radius: 14px;
+  background: #ffe5ef;
+  color: #d81b60;
+  font-weight: 500;
+  box-shadow: 0 3px 10px rgba(233, 30, 99, 0.1);
+}
+
+/* --- Logout Modal --- */
+.logout-modal {
+  border-radius: 25px;
+  background: #fffafc;
+  padding: 25px;
+  border: 1px solid #fce4ec;
+}
+
+.logout-title {
+  color: #e91e63;
+}
+
+.cancel-btn {
+  background-color: #f8bbd0;
+  color: #fff;
+  border-radius: 50px;
+  font-weight: 600;
+  padding: 8px 20px;
+  border: none;
+}
+
+.cancel-btn:hover {
+  background-color: #f48fb1;
+}
+
+.confirm-logout-btn {
+  background: linear-gradient(135deg, #e91e63, #ff80ab);
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 50px;
+  padding: 8px 20px;
+  box-shadow: 0 4px 10px rgba(233, 30, 99, 0.3);
+}
+
+.confirm-logout-btn:hover {
+  background: linear-gradient(135deg, #d81b60, #ff4081);
+  transform: translateY(-1px);
+}
+
+/* --- Subtle Animations --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h4 {
+    font-size: 1.2rem;
+  }
+
+  .btn-gradient {
+    width: 100%;
+  }
+
+  form {
+    padding: 1.2rem;
+  }
+
+  ul.list-unstyled li::before {
+    display: none;
+  }
+}
+  </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
+  <!-- 🌷 Navbar -->
+  <%- include('./partials/navbar', { activePage: 'groups', userId: userId }) %>
 
-  <nav class="navbar navbar-expand-lg py-3">
-  <div class="container">
-    <h4 class="fw-bold">Smart Expense Splitter</h4>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto align-items-center">
-        <% if (!user) { %>
-          <li class="nav-item"><a class="nav-link" href="/register">Sign Up</a></li>
-          <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-        <% } else { %>
-          <li class="nav-item"><a class="nav-links active" href="/home">Home</a></li>
-          <li class="nav-item"><a class="nav-links" href="/groups">Groups</a></li>
-          <li class="nav-item"><a class="nav-links" href="/expenses">Expenses</a></li>
-          <li class="nav-item"><a class="nav-links" href="/about">About</a></li>
-
-          <!-- Profile Dropdown -->
-          <li class="nav-item dropdown ms-3">
-            <div class="dropdown">
-              <div class="profile-trigger" onclick="toggleDropdown()">
-                <img
-                  src="<%= user.profilePic
-                    ? '/uploads/' + user.profilePic
-                    : 'https://i.pinimg.com/1200x/8b/84/17/8b841799752db5b6e1aa1aa56fe737db.jpg' %>"
-                  alt="Profile"
-                  class="profile-avatar"
-                />
-              </div>
-
-              <div id="profileDropdown" class="dropdown-content shadow-lg">
-                <a href="/profile"><i class="bi bi-person-circle"></i> Profile</a>
-                <a href="/setting"><i class="bi bi-gear"></i> Settings</a>
-                <form id="logoutForm" action="/logout" method="POST" style="display:inline;">
-                  <button type="button" class="dropdown-logout" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                    <i class="bi bi-box-arrow-right"></i> Logout
-                  </button>
-                </form>
-              </div>
-            </div>
-          </li>
-        <% } %>
-      </ul>
-    </div>
-  </div>
-</nav>
-
+  <!-- 🌷 Group Details Section -->
   <div class="container my-5">
 
     <h2><%= group.name %></h2>
@@ -64,12 +275,11 @@
 
     <div class="row mb-5">
       <div class="col-md-6">
-        <h4>Members</h4>
+        <h4 style="color: #e91e63; font-weight: 600; border-left: 4px solid #e91e63; padding-left: 10px; margin-bottom: 1rem;">Members</h4>
         <!-- Example member display loop -->
 <ul class="list-unstyled">
   <% (group.members || []).forEach(member => { %>
     <li class="d-flex align-items-center mb-2">
-      <img src="<%= member.profilePic ? '/uploads/' + member.profilePic : '/images/default-avatar.png' %>" class="rounded-circle me-2" width="36" height="36" alt="avatar">
       <span><%= member.username || member.name || member.email %></span>
     </li>
   <% }) %>
@@ -77,7 +287,7 @@
       </div>
 
       <div class="col-md-6">
-        <h4>Add New Member</h4>
+        <h4  style="color: #e91e63; font-weight: 600; border-left: 4px solid #e91e63; padding-left: 10px; margin-bottom: 1rem;">Add New Member</h4>
         <p class="text-muted small">Enter the email of the user you want to add. They must have an account.</p>
 
         <% if (message) { %>
@@ -100,7 +310,7 @@
 
     <div class="row">
       <div class="col">
-        <h4>Expenses</h4>
+        <h4 style="color: #e91e63; font-weight: 600; border-left: 4px solid #e91e63; padding-left: 10px; margin-bottom: 1rem;">Expenses</h4>
 
         <% if (locals.expenses && expenses.length > 0) { %>
           <ul class="list-group">

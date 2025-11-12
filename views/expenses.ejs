@@ -4,200 +4,411 @@
   <%- include('./partials/head') %>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <title>Smart Expense Splitter</title>
+  <style>
+    /* 🌸 General Page Style */
+body {
+  background-color: #fff8fa;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+}
+
+/* 🌷 Headings */
+h2 {
+  font-weight: 600;
+  font-size: 2.1rem;
+  color: rgb(230, 120, 142);
+  letter-spacing: 2px;
+  font-family: 'Pacifico', cursive, sans-serif;
+}
+
+/* ✨ Card Styling */
+.expense-card {
+  border: none;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 3px 12px rgba(233, 30, 99, 0.1);
+  transition: all 0.25s ease;
+}
+
+.expense-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 5px 16px rgba(233, 30, 99, 0.2);
+}
+
+/* 🌸 Card Title & Text */
+.expense-card .card-title {
+  font-weight: 500;
+  color: #444;
+}
+
+.expense-card small,
+.expense-card .text-muted {
+  font-size: 0.88rem;
+  color: #777 !important;
+}
+
+/* 💰 Amounts */
+.text-pink {
+  color: #e91e63 !important;
+}
+
+.btn-gradient {
+  background: linear-gradient(135deg, #ff8ba7, #e91e63);
+  border: none;
+  color: #fff !important;
+  font-weight: 500;
+  border-radius: 25px;
+  padding: 10px 22px;
+  transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #ff5f85, #d81b60);
+  transform: translateY(-2px);
+}
+/* 🌷 Filter Dropdown */
+#filterSelect {
+  appearance: none; /* removes native arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  background-color: #fff;
+  border: 2px solid #f0b0bd;
+  color: #333;
+  font-weight: 500;
+  padding: 10px 40px 10px 18px; /* add space for custom arrow */
+  border-radius: 25px;
+  cursor: pointer;
+    -position: right 12px center,
+    -webkit-calc(100% - 20px) center;
+}
+
+#filterSelect:hover,
+#filterSelect:focus {
+  border-color: #e91e63;
+  box-shadow: 0 0 0 0.15rem rgba(233, 30, 99, 0.25);
+}
+
+/* 🌷 Fix Dropdown Alignment and Spacing */
+#filterSelect {
+  vertical-align: middle; /* keep aligned with text/button */
+  display: inline-block;
+  max-width: 180px; /* neat size */
+  margin-left: 10px;
+}
+
+/* 🩷 Better layout on smaller screens */
+@media (max-width: 768px) {
+  .col-md-4.text-md-end {
+    text-align: left !important;
+    margin-top: 10px;
+  }
+
+  #filterSelect {
+    width: 100%;
+    margin-top: 10px;
+    margin-left: 0;
+  }
+}
+
+/* Optional: add spacing between button and dropdown */
+.col-md-4.text-md-end > * {
+  margin-bottom: 8px;
+}
+
+/* 🌼 Badges */
+.badge {
+  border-radius: 10px;
+  font-weight: 500;
+  padding: 6px 10px;
+}
+
+.badge.bg-success {
+  background-color: #a8e6cf !important;
+  color: #155724;
+}
+
+.badge.bg-warning {
+  background-color: #ffe8a1 !important;
+  color: #856404;
+}
+
+.badge.bg-primary {
+  background-color: #9ed0ff !important;
+  color: #084298;
+}
+
+/* 🌸 Buttons (small ones inside cards) */
+.expense-card .btn-sm {
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.expense-card .btn-sm:hover {
+  transform: scale(1.05);
+}
+
+/* 🌼 Delete, Settle, and Pay buttons */
+.btn-danger {
+  background-color: #ff6b81 !important;
+  border: none;
+}
+
+.btn-outline-success {
+  border-color: #28a745 !important;
+  color: #28a745 !important;
+}
+
+.btn-outline-success:hover {
+  background-color: #28a745 !important;
+  color: #fff !important;
+}
+
+/* 🌸 Empty State Alert */
+.alert-info {
+  background-color: #ffeef3;
+  border: 1px solid #f8c2d1;
+  color: #d63384;
+  border-radius: 15px;
+  font-weight: 500;
+}
+
+/* 🌸 Logout Modal */
+.logout-modal {
+  border-radius: 20px;
+  background: #fffafc;
+}
+
+.logout-title {
+  color: #e91e63;
+}
+
+.cancel-btn {
+  background-color: #f8d7da;
+  border: none;
+  color: #b02a37;
+  border-radius: 20px;
+  padding: 8px 18px;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background-color: #f5c2c7;
+}
+
+.confirm-logout-btn {
+  background: linear-gradient(135deg, #ff8ba7, #e91e63);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 18px;
+  transition: all 0.3s ease;
+}
+
+.confirm-logout-btn:hover {
+  background: linear-gradient(135deg, #ff5f85, #d81b60);
+  transform: translateY(-2px);
+}
+
+/* 🌸 Smooth Animations */
+.card, .btn, #filterSelect, .badge {
+  transition: all 0.3s ease-in-out;
+}
+
+/* 🌷 Responsive */
+@media (max-width: 768px) {
+  .btn-gradient {
+    width: 100%;
+  }
+
+  #filterSelect {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .expense-card {
+    margin-bottom: 1.5rem;
+  }
+}
+
+  </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-  <nav class="navbar navbar-expand-lg py-3">
-  <div class="container">
-    <h4 class="fw-bold">Smart Expense Splitter</h4>
+  <!-- 🌸 Navbar -->
+  <%- include('./partials/navbar', { activePage: 'groups', userId: userId }) %>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto align-items-center">
-        <% if (!user) { %>
-          <li class="nav-item"><a class="nav-link" href="/register">Sign Up</a></li>
-          <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-        <% } else { %>
-          <li class="nav-item"><a class="nav-links active" href="/home">Home</a></li>
-          <li class="nav-item"><a class="nav-links" href="/groups">Groups</a></li>
-          <li class="nav-item"><a class="nav-links" href="/expenses">Expenses</a></li>
-          <li class="nav-item"><a class="nav-links" href="/about">About</a></li>
-
-          <!-- Profile Dropdown -->
-          <li class="nav-item dropdown ms-3">
-            <div class="dropdown">
-              <div class="profile-trigger" onclick="toggleDropdown()">
-                <img
-                  src="<%= user.profilePic
-                    ? '/uploads/' + user.profilePic
-                    : 'https://i.pinimg.com/1200x/8b/84/17/8b841799752db5b6e1aa1aa56fe737db.jpg' %>"
-                  alt="Profile"
-                  class="profile-avatar"
-                />
-              </div>
-
-              <div id="profileDropdown" class="dropdown-content shadow-lg">
-                <a href="/profile"><i class="bi bi-person-circle"></i> Profile</a>
-                <a href="/setting"><i class="bi bi-gear"></i> Settings</a>
-                <form id="logoutForm" action="/logout" method="POST" style="display:inline;">
-                  <button type="button" class="dropdown-logout" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                    <i class="bi bi-box-arrow-right"></i> Logout
-                  </button>
-                </form>
-              </div>
-            </div>
-          </li>
-        <% } %>
-      </ul>
-    </div>
-  </div>
-</nav>
-
+  <!-- 🌸 Expenses Section -->
   <div class="container my-5">
     <div class="row mb-4 align-items-center">
-      <div class="col-md-9">
+      <div class="col-md-8">
         <h2>My Expenses</h2>
         <p class="text-muted">A list of all expenses you're involved in.</p>
       </div>
-      <div class="col-md-3 text-md-end">
-
-        <button id="test-pay-btn" class="btn btn-success me-2">
-          Test Pay ₹10
-        </button>
-
-        <a href="/expenses/new" class="btn btn-gradient">
-          + Add New Expense
-        </a>
+      <div class="col-md-4 text-md-end">
+        <a href="/expenses/new" class="btn btn-gradient mb-2">+ Add New Expense</a>
+        <select id="filterSelect" class="form-select w-auto d-inline-block">
+          <option value="all" selected>Show All</option>
+          <option value="pending">Pending</option>
+          <option value="paid">Paid</option>
+          <option value="settled">Settled</option>
+        </select>
       </div>
     </div>
 
-    <div class="card shadow-sm">
-      <ul class="list-group list-group-flush">
-        <% if (expenses && expenses.length > 0) { %>
-          <% expenses.forEach(expense => {
-     const meKey = (typeof userId !== 'undefined' && userId) ? String(userId) : null;
-     const participantsArr = (expense.participants && expense.participants.length)
-       ? expense.participants.map(p => String(p))
-       : ((expense.group && expense.group.members) ? expense.group.members.map(m => String(m._id)) : []);
+    <% if (!expenses || expenses.length === 0) { %>
+      <div class="alert alert-info text-center">
+        No expenses yet. Add one to get started! 🌸
+      </div>
+    <% } else { %>
 
-     // skip rendering if current user is neither participant nor payer
-     const isPayer = expense.paidBy && (String(expense.paidBy._id || expense.paidBy) === meKey);
-     if (!participantsArr.includes(meKey) && !isPayer) { return; }
-%>
-  <li class="list-group-item d-flex justify-content-between align-items-start">
-    <div>
-      <h6 class="mb-1"><%= expense.description %></h6>
-      <small class="text-muted">In group: <strong><%= expense.group && expense.group.name ? expense.group.name : '—' %></strong></small>
-      <div class="small text-muted">Paid by <strong><%= payeeName %></strong> on <%= new Date(expense.date).toLocaleDateString() %></div>
+      <% expenses.forEach(expense => {
+        const meKey = String(userId);
+        const participantsArr = (expense.participants && expense.participants.length)
+          ? expense.participants.map(p => String(p))
+          : ((expense.group && expense.group.members)
+            ? expense.group.members.map(m => String(m._id))
+            : []);
+        const isPayer = expense.paidBy && (String(expense.paidBy._id || expense.paidBy) === meKey);
+        const payeeName = expense.paidBy?.username || expense.paidBy?.name || "Unknown";
+        const splitAmount = (expense.amount / (participantsArr.length || 1));
+        const mePaid = expense.paidSplits && expense.paidSplits[meKey];
+        const allPaid = Object.values(expense.paidSplits || {}).every(Boolean);
+        const status = allPaid ? "settled" : (mePaid ? "paid" : "pending");
+      %>
 
-      <div class="mt-2">
-        <small class="text-muted">Split:</small>
-        <ul class="list-unstyled small mb-0">
-          <%
-            // iterate only participants for this expense
-            participantsArr.forEach(pid => {
-              const pidStr = String(pid);
-              const member = (expense.group && expense.group.members) ? expense.group.members.find(m => String(m._id) === pidStr) : null;
-              const displayName = member ? (member.username || member.name || member.email || pidStr) : pidStr;
-              const splitAmt = (expense.splits && Object.prototype.hasOwnProperty.call(expense.splits, pidStr))
-                ? Number(expense.splits[pidStr]).toFixed(2)
-                : (Number(expense.amount) / (participantsArr.length || 1)).toFixed(2);
-              const paidFlag = expense.paidSplits && expense.paidSplits[pidStr];
-          %>
-            <li>
-              <strong><%= displayName %></strong>: ₹<%= splitAmt %>
-              <% if (String(pidStr) === String(meKey)) { %>
-                <% if (paidFlag || (expense.paidBy && (String(expense.paidBy._id || expense.paidBy) === String(meKey)))) { %>
-                  <span class="badge bg-success ms-2">Paid</span>
-                <% } else { %>
-                  <span class="badge bg-warning text-dark ms-2">You owe</span>
-                <% } %>
-              <% } else if (paidFlag) { %>
-                <span class="badge bg-success ms-2">Paid</span>
+      <div class="card mb-4 shadow-sm expense-card" data-status="<%= status %>">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h5 class="card-title mb-1"><%= expense.description || "Untitled Expense" %></h5>
+              <small class="text-muted">
+                Group: <strong><%= expense.group?.name || '—' %></strong> |
+                Paid by <strong><%= payeeName %></strong> |
+                <%= new Date(expense.date).toLocaleDateString() %>
+              </small>
+              <div class="mt-2 small text-muted">
+                💰 Total: ₹<%= expense.amount %> |
+                Your Share: ₹<%= splitAmount.toFixed(2) %>
+              </div>
+
+              <div class="mt-2">
+                <small class="text-muted">Participants:</small>
+                <ul class="list-unstyled small mb-0">
+                  <% participantsArr.forEach(pid => {
+                    const pidStr = String(pid);
+                    const member = (expense.group?.members)
+                      ? expense.group.members.find(m => String(m._id) === pidStr)
+                      : null;
+                    const displayName = member?.username || member?.name || member?.email || pidStr;
+                    const paidFlag = expense.paidSplits && expense.paidSplits[pidStr];
+                  %>
+                    <li>
+                      <strong><%= displayName %></strong>
+                      <% if (paidFlag) { %>
+                        <span class="badge bg-success ms-2">Paid</span>
+                      <% } else { %>
+                        <span class="badge bg-warning text-dark ms-2">Pending</span>
+                      <% } %>
+                    </li>
+                  <% }) %>
+                </ul>
+              </div>
+            </div>
+
+            <!-- 🌸 Status Badge -->
+            <div class="text-end">
+              <% if (status === "settled") { %>
+                <span class="badge bg-success">Settled</span>
+              <% } else if (status === "paid") { %>
+                <span class="badge bg-primary">Paid</span>
+              <% } else { %>
+                <span class="badge bg-warning text-dark">Pending</span>
               <% } %>
-            </li>
-          <% }) %>
-        </ul>
+            </div>
+          </div>
+
+          <!-- 🌸 Buttons -->
+          <div class="mt-3 d-flex flex-wrap gap-2">
+            <% if (!mePaid && !isPayer) { %>
+              <button
+                class="btn btn-sm btn-primary pay-btn"
+                data-expense-id="<%= expense._id %>"
+                data-amount="<%= splitAmount.toFixed(2) %>"
+                data-payee-name="<%= payeeName %>">
+                Pay ₹<%= splitAmount.toFixed(2) %>
+              </button>
+            <% } %>
+
+            <form action="/expenses/<%= expense._id %>/pay" method="POST" style="display:inline;">
+              <button type="submit" class="btn btn-sm btn-success">✅ Mark as Paid</button>
+            </form>
+
+            <% if (isPayer) { %>
+              <form action="/expenses/<%= expense._id %>/delete" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-sm btn-danger">🗑 Delete</button>
+              </form>
+
+              <form action="/expenses/<%= expense._id %>/settle" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-sm btn-outline-success">✔ Mark as Settled</button>
+              </form>
+            <% } %>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="text-end">
-      <div class="fw-bold text-pink mb-2">₹<%= Number(splitAmount).toFixed(2) %></div>
-
-      <% /* Show Pay button only if current user is one of participants, owes and hasn't paid, and is not the payer */ %>
-      <% if (meKey && participantsArr.includes(String(meKey)) && !mePaid && !(expense.paidBy && (String(expense.paidBy._id || expense.paidBy) === String(meKey)))) { %>
-        <button
-          class="btn btn-sm btn-primary pay-btn"
-          data-expense-id="<%= expense._id %>"
-          data-amount="<%= splitAmount.toFixed(2) %>"
-          data-payee-name="<%= payeeName %>">
-          Pay ₹<%= splitAmount.toFixed(2) %> to <%= payeeName %>
-        </button>
-      <% } else { %>
-        <% if (meKey && mePaid) { %>
-          <div class="text-success small">You paid</div>
-        <% } %>
-      <% } %>
-    </div>
-  </li>
-<% }) %>
-        <% } else { %>
-          <li class="list-group-item text-center text-muted p-4">
-            You have no expenses yet.
-          </li>
-        <% } %>
-      </ul>
-    </div>
+      <% }) %>
+    <% } %>
   </div>
-  <!-- 🌸 Aesthetic Pink Logout Confirmation Modal -->
-<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content logout-modal text-center shadow-lg">
-      <div class="modal-header border-0 justify-content-center">
-        <h5 class="modal-title fw-bold fs-4 logout-title" id="logoutModalLabel">
-          Are you sure you want to logout?
-        </h5>
-      </div>
-      <div class="modal-body">
-        <p class="text-muted mb-4">You’ll be signed out from Smart Expense Splitter 💗</p>
-        <div class="d-flex justify-content-center gap-3">
-          <button type="button" class="btn cancel-btn" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn confirm-logout-btn" onclick="logoutUser()">Logout</button>
+
+  <!-- 🌸 Logout Modal -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content logout-modal text-center shadow-lg">
+        <div class="modal-header border-0 justify-content-center">
+          <h5 class="modal-title fw-bold fs-4 logout-title" id="logoutModalLabel">
+            Are you sure you want to logout?
+          </h5>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted mb-4">You’ll be signed out from Smart Expense Splitter 💗</p>
+          <div class="d-flex justify-content-center gap-3">
+            <button type="button" class="btn cancel-btn" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn confirm-logout-btn" onclick="logoutUser()">Logout</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
   <%- include('./partials/footer') %>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    // razorpayKeyId already passed from server
     const razorpayKeyId = '<%= razorpayKeyId %>';
 
+    // 💸 Razorpay Payment Flow
     document.addEventListener('click', async function (e) {
       const btn = e.target.closest('.pay-btn');
       if (!btn) return;
-      e.preventDefault();
 
       const expenseId = btn.dataset.expenseId;
       const amount = Number(btn.dataset.amount);
       if (!expenseId || !amount) return alert('Invalid payment amount.');
 
-      // create order and open razorpay (server routes from earlier)
       const resp = await fetch('/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ expenseId, amount })
       });
+
       if (!resp.ok) {
         const err = await resp.json().catch(() => ({ message: 'Server error' }));
         return alert(err.message || 'Could not create order.');
       }
+
       const order = await resp.json();
 
       const options = {
@@ -220,18 +431,29 @@
           });
           const data = await verifyResp.json();
           if (data.status === 'success') {
-            alert('Payment successful.');
+            alert('Payment successful ✅');
             location.reload();
           } else {
-            alert('Payment verification failed.');
+            alert('Payment verification failed ❌');
           }
         },
-        prefill: {},
         theme: { color: "#F0B0BD" }
       };
 
       const rzp = new Razorpay(options);
       rzp.open();
+    });
+
+    // 🌈 Filter logic
+    const filterSelect = document.getElementById('filterSelect');
+    const cards = document.querySelectorAll('.expense-card');
+
+    filterSelect.addEventListener('change', () => {
+      const selected = filterSelect.value;
+      cards.forEach(card => {
+        const status = card.getAttribute('data-status');
+        card.style.display = (selected === 'all' || status === selected) ? 'block' : 'none';
+      });
     });
 
     function logoutUser() {
@@ -240,3 +462,4 @@
   </script>
 </body>
 </html>
+

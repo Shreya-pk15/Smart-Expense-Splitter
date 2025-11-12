@@ -386,8 +386,8 @@ nav a.nav-link:hover {
           <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
         <% } else { %>
           <li class="nav-item"><a class="nav-links active" href="/home">Home</a></li>
-          <li class="nav-item"><a class="nav-links" href="#">Groups</a></li>
-          <li class="nav-item"><a class="nav-links" href="/expenses">Expenses</a></li>
+          <li class="nav-item"><a class="nav-links" href="/groups">Groups</a></li>
+          <li class="nav-item"><a class="nav-links"  style="margin-right: 18px;" href="/expenses">Expenses</a></li>
           <li class="nav-item"><a class="nav-links" href="/about">About</a></li>
 
           <!-- Profile Dropdown -->
@@ -430,14 +430,10 @@ nav a.nav-link:hover {
          class="profile-avatar"
          onclick="enlargeProfile(this.src)">
 
-    <div class="profile-name" id="displayName"><%= user.name || user.username %></div>
+    <div class="profile-name" id="displayName"><%= user.name %></div>
 
     <!-- remove or comment out any line like: <h2><%= user.name %></h2> -->
 <% /* Name hidden by request — show username instead if you prefer: */ %>
-<% if (user && user.username) { %>
-  <h2 class="mb-1"><%= user.username %></h2>
-<% } %>
-
     <form action="/profile/update" method="POST" enctype="multipart/form-data" class="text-start mt-4">
       <div class="form-group mb-3">
         <label>Your Name</label>

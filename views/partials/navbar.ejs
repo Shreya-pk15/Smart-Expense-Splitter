@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg py-3">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="/">Smart Expense Splitter</a>
+    <h4 class="fw-bold">Smart Expense Splitter</h4>
+    <link rel="stylesheet" href="/styles/navbar.css">
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
@@ -8,42 +9,84 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto align-items-center">
-        <li class="nav-item">
-          <a class="nav-link <%= (page === 'home') ? 'active' : '' %>" href="/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link <%= (page === 'groups') ? 'active' : '' %>" href="/groups">Groups</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link <%= (page === 'expenses') ? 'active' : '' %>" href="/expenses">Expenses</a>
-        </li>
-
-        <% /* show profile / login based on userId */ %>
-        <% if (typeof userId !== 'undefined' && userId) { %>
-          <li class="nav-item dropdown ms-3">
-            <a class="nav-link dropdown-toggle" href="#" id="profileDropdownToggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <% /* hide name: show avatar only if available */ %>
-              <% if (user && user.profilePic) { %>
-                <img src="/uploads/<%= user.profilePic %>" alt="avatar" class="rounded-circle" style="width:28px;height:28px;object-fit:cover;">
-              <% } else { %>
-                <span class="bi-person-circle" style="font-size:1.15rem;"></span>
-              <% } %>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdownToggle">
-              <li><a class="dropdown-item" href="/profile">My Profile</a></li>
-              <li><a class="dropdown-item" href="/settings">Settings</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li>
-                <form id="logoutForm" action="/logout" method="POST" class="m-0">
-                  <button class="dropdown-item" type="submit">Logout</button>
-                </form>
-              </li>
-            </ul>
-          </li>
+        <% if (!user) { %>
+          <li class="nav-item"><a class="nav-link" href="/register">Sign Up</a></li>
+          <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
         <% } else { %>
-          <li class="nav-item ms-3"><a class="nav-link" href="/login">Login</a></li>
+          <li class="nav-item"><a class="nav-links <%= activePage === 'home' ? 'active' : '' %>" href="/home">Home</a></li>
+          <li class="nav-item"><a class="nav-links <%= activePage === 'groups' ? 'active' : '' %>" href="/groups">Groups</a></li>
+          <li class="nav-item"><a class="nav-links <%= activePage === 'expenses' ? 'active' : '' %>" style="margin-right: 18px;" href="/expenses">Expenses</a></li>
+          <li class="nav-item"><a class="nav-links <%= activePage === 'about' ? 'active' : '' %>" href="/about">About</a></li>
+
+          <!-- Profile Dropdown -->
+          <li class="nav-item dropdown ms-3">
+            <div class="dropdown">
+              <div class="profile-trigger" onclick="toggleDropdown(event)">
+                <img
+                  src="<%= user.profilePic
+                    ? '/uploads/' + user.profilePic
+                    : 'https://i.pinimg.com/1200x/8b/84/17/8b841799752db5b6e1aa1aa56fe737db.jpg' %>"
+                  alt="Profile"
+                  class="profile-avatar"
+                />
+              </div>
+
+              <div id="profileDropdown" class="dropdown-content shadow-lg">
+                <a href="/profile"><i class="bi bi-person-circle"></i> Profile</a>
+                <a href="/setting"><i class="bi bi-gear"></i> Settings</a>
+                <form id="logoutForm" action="/logout" method="POST" style="display:inline;">
+                  <button type="button" class="dropdown-logout" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                  </button>
+                </form>
+              </div>
+            </div>
+          </li>
         <% } %>
       </ul>
     </div>
   </div>
 </nav>
+
+<!-- 🌸 Logout Confirmation Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content logout-modal text-center shadow-lg">
+      <div class="modal-header border-0 justify-content-center">
+        <h5 class="modal-title fw-bold fs-4 logout-title" id="logoutModalLabel">
+          Are you sure you want to logout?
+        </h5>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-4">You’ll be signed out from Smart Expense Splitter 💗</p>
+        <div class="d-flex justify-content-center gap-3">
+          <button type="button" class="btn cancel-btn" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn confirm-logout-btn" onclick="logoutUser()">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ✅ Toggle dropdown (fixed version)
+  function toggleDropdown(event) {
+    event.stopPropagation(); // Prevents it from instantly closing
+    const dropdown = document.getElementById("profileDropdown");
+    dropdown.classList.toggle("show");
+  }
+
+  // ✅ Close dropdown when clicking outside
+  document.addEventListener("click", (event) => {
+    const dropdown = document.getElementById("profileDropdown");
+    const trigger = document.querySelector(".profile-trigger");
+    if (!dropdown.contains(event.target) && !trigger.contains(event.target)) {
+      dropdown.classList.remove("show");
+    }
+  });
+
+  // ✅ Logout handler
+  function logoutUser() {
+    document.getElementById("logoutForm").submit();
+  }
+</script>
