@@ -1,87 +1,148 @@
-# Smart Expense Splitter
+# 💸 Smart Expense Splitter
 
-A friendly web app to split group expenses, track payments, and manage groups — built with Node.js, Express, MongoDB and a pink aesthetic UI.
-Welcome to Smart Expense Splitter, a full-stack web application designed to make splitting group expenses effortless. Users can register, create groups, add expenses, and track who owes what — all in a friendly pink-themed interface. 🌸
+A friendly full-stack web app that makes splitting group expenses effortless and fun!
+Built using **Node.js**, **Express**, and **MongoDB**, styled with a **soft pink aesthetic UI**. 🌸
 
-## Features
-- User registration & login (secure sessions)
-- Create groups and add members
-- Add expenses to groups (amount, description, date)
-- View group balances and settle up
-- Profile with avatar upload and settings (change password)
-- Razorpay integration for payments (optional)
-- Responsive UI using EJS templates, Bootstrap & custom pink CSS
+It lets users create groups, add shared expenses, track who owes what, change passwords, and contact support — all in a secure, responsive design.
 
-## Tech Stack
-- Backend: Node.js (v18+), Express.js, MongoDB (Mongoose), express-session, bcrypt, dotenv, multer, Razorpay
-- Frontend: EJS templates, HTML, CSS, Bootstrap, Vanilla JS
-- Storage: Local `uploads/` for avatars (consider S3/Cloudinary for production)
+---
 
-## MongoDB Setup
-1. Create a MongoDB Atlas cluster.
-2. Create a database (e.g., expenseDB) and collections: users, groups, expenses.
-3. Get connection string, e.g.:
-   mongodb+srv://<username>:<password>@cluster0.mongodb.net/expenseDB
-4. Put it in your .env:
-   MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/expenseDB
+## ✨ Features
 
-## Environment Variables
-Create a `.env` file in the project root:
-PORT=5000
-MONGO_URI=your_mongo_uri
-SESSION_SECRET=your_session_secret
-RAZORPAY_KEY_ID=your_razorpay_key_id   # optional
-RAZORPAY_KEY_SECRET=your_razorpay_key_secret   # optional
+* 👥 **Group Expense Management:** Create groups and add shared expenses.
+* 💰 **Smart Split Calculations:** Automatically divides costs among group members.
+* 🔒 **Account Settings:** Change passwords securely with strength check and validation.
+* 📬 **Contact Support:** Simple contact form with toast notifications.
+* ❓ **FAQs Section:** Interactive accordion for common questions.
+* 🌈 **Responsive Design:** Works smoothly across mobile, tablet, and desktop.
+* 💾 **Secure Backend:** Passwords are encrypted, and user sessions are protected.
 
-## Running the App (local)
-1. Open the project folder in a terminal (Windows):
-   cd "d:\3rd year\Full Stack\practice\Smart-Expense-Splitter-1"
-2. Install dependencies:
-   npm install
-3. Start the server:
-   npm start
-4. Open: http://localhost:5000 (or the PORT you set)
+---
 
-## Quickstart (production)
-1. Set environment variables (in host or `.env`):
-   PORT=5000
-   MONGO_URI=your_mongo_uri
-   RAZORPAY_KEY_ID=your_razorpay_key_id
-   RAZORPAY_KEY_SECRET=your_razorpay_key_secret
-2. Run the server:
-   npm start
-Use a process manager (pm2) or a suitable hosting platform (Heroku, Railway, DigitalOcean, etc.). Persist uploads or use cloud storage.
+## 🧠 Tech Stack
 
-## Folder Structure
+**Frontend:**
+
+* HTML5, CSS3 (Custom pink theme)
+* Bootstrap 5 + Bootstrap Icons
+* JavaScript (Vanilla for interactivity)
+
+**Backend:**
+
+* Node.js + Express.js
+* MongoDB (via Mongoose)
+* Razorpay (for payment gateway integration — optional)
+
+**Other Tools:**
+
+* bcrypt.js (for password hashing)
+* dotenv (for environment variables)
+* multer (for file uploads)
+* express-session (for authentication sessions)
+
+---
+
+## 🧩 Folder Structure
+
 Smart-Expense-Splitter/
-- server.js                # Main app entry, routes & middleware
-- package.json             # Dependencies & scripts
-- views/                   # EJS templates (UI)
-  - new_expense.ejs
-  - profile.ejs
-  - setting.ejs
-  - partials/
-    - navbar.ejs
-    - head.ejs
-    - footer.ejs
-- public/                  # Static assets
-  - css/
-    - style.css
-  - js/
-  - images/
-- uploads/                 # Uploaded profile images
-- .env                     # Environment variables (ignored in git)
+│
+├── public/
+│   ├── styles/
+│   │   ├── style.css
+│   │   └── navbar.css
+│   └── images/
+│
+├── views/
+│   ├── partials/
+│   │   └── navbar.ejs
+│   ├── settings.ejs
+│   ├── groups.ejs
+│   ├── expenses.ejs
+│   └── ...
+│
+├── routes/
+│   ├── authRoutes.js
+│   ├── groupRoutes.js
+│   ├── expenseRoutes.js
+│   └── settingsRoutes.js
+│
+├── models/
+│   ├── User.js
+│   ├── Group.js
+│   └── Expense.js
+│
+├── server.js
+├── package.json
+└── README.md
 
-## Notes
-- Views expect controllers to pass `user`, `groups`, and `message` to EJS templates (e.g., `views/new_expense.ejs`).
-- Uploaded avatars are stored locally; for production use S3/Cloudinary.
-- Configure secure sessions, HTTPS, and proper CORS for production.
+---
 
-## Future Enhancements
-- Expense analytics & charts
-- Group chat integration
-- Full payment flows with Razorpay/Stripe
-- Admin dashboard and reporting
+## ⚙️ Installation & Setup
 
-👩‍💻 Made with 💖 by Students for Students
-Crafted with curiosity, teamwork, and a touch of pink! Built using Node.js, Express, MongoDB, and Bootstrap — to make splitting bills fun, fast, and fair! 💕
+1. **Clone the repository**
+   git clone [https://github.com/](https://github.com/)<your-username>/smart-expense-splitter.git
+   cd smart-expense-splitter
+
+2. **Install dependencies**
+   npm install
+
+3. **Create a `.env` file**
+   MONGO_URI=your_mongodb_connection_string
+   SESSION_SECRET=your_secret_key
+   RAZORPAY_KEY_ID=your_razorpay_key
+   RAZORPAY_KEY_SECRET=your_razorpay_secret
+   PORT=5000
+
+4. **Run the app**
+   npm start
+
+   or for development:
+   nodemon server.js
+
+5. **Visit the app**
+   [http://localhost:5000](http://localhost:5000)
+
+---
+
+## 🔐 Key Pages
+
+| Page          | Description                         |
+| ------------- | ----------------------------------- |
+| `/register`   | User registration                   |
+| `/login`      | User login                          |
+| `/dashboard`  | Overview of groups and expenses     |
+| `/groups/:id` | Detailed view of a group’s expenses |
+| `/settings`   | Change password, FAQs, contact form |
+| `/contact`    | Send feedback or inquiries          |
+
+---
+
+## 💅 UI Highlights
+
+* **Pastel pink color palette** for a cheerful experience
+* Smooth animations (`fadeIn`, `slideIn`) for transitions
+* **Interactive password strength indicator**
+* **Toast notifications** for success/error feedback
+* **Fully responsive layout** that adapts to any device
+
+---
+
+## 🧪 Testing (Optional)
+
+You can set up automated tests using **Jest**, **Supertest**, and **mongodb-memory-server**.
+
+npm install --save-dev jest supertest mongodb-memory-server
+API Testing
+
+---
+
+## 🏁 Future Enhancements
+
+* 💳 Integration with Razorpay for real expense settlement
+* 📊 Visual charts for expense summaries
+* 📱 Progressive Web App (PWA) support
+* 🔔 Email notifications for group updates
+
+---
+
+### 🌸 “Splitting bills doesn’t have to split friendships!” 🌸
