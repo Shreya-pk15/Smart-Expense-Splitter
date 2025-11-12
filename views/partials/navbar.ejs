@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg py-3">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/home">💰 Smart Expense Splitter</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+
+        <li class="nav-item">
+          <a class="nav-link <%= (!page || page === 'home') ? 'active' : '' %>" href="/home">Home</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link <%= (page === 'expenses') ? 'active' : '' %>" href="/expenses">Expenses</a>
+        </li>
+
+        <% if (userId) { %>
+          <li class="nav-item">
+            <a class="nav-link <%= (page === 'groups') ? 'active' : '' %>" href="/groups">Groups</a>
+          </li>
+         
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link <%= (page === 'login') ? 'active' : '' %>" href="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= (page === 'register') ? 'active' : '' %>" href="/register">Sign Up</a>
+          </li>
+        <% } %>
+
+        <li class="nav-item">
+          <a class="nav-link <%= (page === 'about') ? 'active' : '' %>" href="/about">About</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link <%= (page === 'contact') ? 'active' : '' %>" href="/contact">Contact</a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
