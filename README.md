@@ -46,34 +46,34 @@ It lets users create groups, add shared expenses, track who owes what, change pa
 
 Smart-Expense-Splitter/
 │
-├── public/
-│   ├── styles/
-│   │   ├── style.css
-│   │   └── navbar.css
-│   └── images/
-│
-├── views/
-│   ├── partials/
-│   │   └── navbar.ejs
-│   ├── settings.ejs
-│   ├── groups.ejs
-│   ├── expenses.ejs
+├── public/ 
+│   ├── styles/  
+│   │   ├── style.css   
+│   │   └── navbar.css   
+│   └── images/             
+|
+├── views/       
+│   ├── partials/  
+│   │   └── navbar.ejs  
+│   ├── settings.ejs 
+│   ├── groups.ejs 
+│   ├── expenses.ejs 
 │   └── ...
 │
 ├── routes/
-│   ├── authRoutes.js
-│   ├── groupRoutes.js
-│   ├── expenseRoutes.js
-│   └── settingsRoutes.js
+│   ├── authRoutes.js 
+│   ├── groupRoutes.js 
+│   ├── expenseRoutes.js 
+│   └── settingsRoutes.js 
 │
 ├── models/
-│   ├── User.js
-│   ├── Group.js
-│   └── Expense.js
-│
-├── server.js
-├── package.json
-└── README.md
+│   ├── User.js 
+│   ├── Group.js 
+│   └── Expense.js 
+│ 
+├── server.js 
+├── package.json 
+└── README.md 
 
 ---
 
