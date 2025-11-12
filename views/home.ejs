@@ -70,7 +70,6 @@
                   alt="Profile"
                   class="profile-avatar"
                 />
-                <span class="user-name"><%= user.name %></span>
               </div>
 
               <div id="profileDropdown" class="dropdown-content shadow-lg">
@@ -103,7 +102,7 @@
         <p class="lead mb-4 text-muted">
           Manage group bills easily, track who owes <br> what, and keep everything <br> fair & transparent — beautifully.
         </p>
-        <a href="#" class="btn btn-gradient btn-lg px-4">Get Started</a>
+        <a href="/groups" class="btn btn-gradient btn-lg px-4">Get Started</a>
       </div>
       <div class="hero-img mt-4 mt-md-0 ms-md-3">
         <img src="image/split.png" alt="Friends illustration" class="img-fluid" style="max-width: 420px;">
@@ -231,9 +230,7 @@
   </section>
 
   <!-- Footer -->
-  <footer class="py-4 text-center text-white footer-gradient mt-auto">
-    <p class="mb-0">© <%= new Date().getFullYear() %> Smart Expense Splitter | Made with 💗 using Node.js, Express & MongoDB</p>
-  </footer>
+  <%- include('./partials/footer') %>
 
   <script>
     function flipCard(card) {

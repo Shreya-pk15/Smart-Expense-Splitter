@@ -401,8 +401,6 @@ nav a.nav-link:hover {
   alt="Profile"
   class="navbar-avatar"
 />
-
-                <span class="user-name"><%= user.name %></span>
               </div>
 
               <div id="profileDropdown" class="dropdown-content shadow-lg">
@@ -433,6 +431,12 @@ nav a.nav-link:hover {
          onclick="enlargeProfile(this.src)">
 
     <div class="profile-name" id="displayName"><%= user.name || user.username %></div>
+
+    <!-- remove or comment out any line like: <h2><%= user.name %></h2> -->
+<% /* Name hidden by request — show username instead if you prefer: */ %>
+<% if (user && user.username) { %>
+  <h2 class="mb-1"><%= user.username %></h2>
+<% } %>
 
     <form action="/profile/update" method="POST" enctype="multipart/form-data" class="text-start mt-4">
       <div class="form-group mb-3">
@@ -492,6 +496,8 @@ nav a.nav-link:hover {
     <span class="close-btn" onclick="closeOverlay()">×</span>
     <img id="overlayImg" src="">
   </div>
+
+  <%- include('./partials/footer') %>
 
   <script>
     function enlargeProfile(src) {
