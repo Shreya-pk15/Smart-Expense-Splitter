@@ -16,7 +16,6 @@ body {
 
 /* --- Page Header --- */
 h2 {
-  font-weight: 600;
   font-size: 2.1rem;
   color: rgb(230, 120, 142);
   letter-spacing: 2px;
@@ -221,6 +220,31 @@ label.form-label {
   transform: translateY(-1px);
 }
 
+.btn-delete {
+  background: none;
+  border: none;
+  color: #ff4d6d;
+  font-size: 1rem;
+  cursor: pointer;
+  height: 20px;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.btn-delete:hover {
+  transform: scale(1.15);
+  color: #d90429;
+}
+
+.list-unstyleddelete-members{
+  background-color: #ff6f91;
+  align-items: right;
+  color: white;
+  background-color: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
 /* --- Subtle Animations --- */
 @keyframes fadeInUp {
   from {
@@ -258,6 +282,7 @@ label.form-label {
   ul.list-unstyled li::before {
     display: none;
   }
+
 }
   </style>
 </head>
@@ -277,13 +302,25 @@ label.form-label {
       <div class="col-md-6">
         <h4 style="color: #e91e63; font-weight: 600; border-left: 4px solid #e91e63; padding-left: 10px; margin-bottom: 1rem;">Members</h4>
         <!-- Example member display loop -->
-<ul class="list-unstyled">
-  <% (group.members || []).forEach(member => { %>
-    <li class="d-flex align-items-center mb-2">
-      <span><%= member.username || member.name || member.email %></span>
-    </li>
-  <% }) %>
-</ul>
+        <ul class="list-unstyled">
+          <% (group.members || []).forEach(member => { %>
+            <li class="d-flex align-items-center mb-2">
+              <span><%= member.username || member.name || member.email %></span>
+
+              <% if (String(group.createdBy) === String(userId) && String(member._id) !== String(group.createdBy)) { %>
+                <form
+  action="/group/<%= group._id %>/remove/<%= member._id %>"
+  method="POST"
+  style="margin-left: auto; background: none; border: none;"
+>
+  <button type="submit" class="btn-delete" title="Remove Member">
+    <i class="bi bi-trash-fill"></i>
+  </button>
+</form>
+              <% } %>
+            </li>
+          <% }) %>
+        </ul>
       </div>
 
       <div class="col-md-6">

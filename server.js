@@ -187,9 +187,6 @@ const groupSchema = new mongoose.Schema(
 
   export const Expense = mongoose.models.Expense || mongoose.model("Expense", expenseSchema);
 
-
-
-  // register Expense safely (avoid redeclare)
   // ensure a single auth middleware instance
   if (!globalThis.__isAuthenticated) {
     globalThis.__isAuthenticated = (req, res, next) => {
@@ -296,9 +293,6 @@ const groupSchema = new mongoose.Schema(
     }
   });
 
-
-  // --- NEW RAZORPAY CODE END ---
-
   // Define schema for contact
   const contactSchema = new mongoose.Schema({
     name: String,
@@ -330,12 +324,6 @@ const groupSchema = new mongoose.Schema(
       });
     }
   });
-
-  // --- Razorpay Setup ---
-  // const razorpay = new Razorpay({
-  //   key_id: process.env.RAZORPAY_KEY_ID,
-  //   key_secret: process.env.RAZORPAY_KEY_SECRET,
-  // });
 
   // --- Routes ---
   app.get("/", (req, res) => res.render("home", {   user: req.session.user|| null }));
@@ -531,27 +519,39 @@ const groupSchema = new mongoose.Schema(
   });
 
   app.post("/login", async (req, res) => {
-    const { email, password } = req.body;
-    try {
-      const user = await User.findOne({ email: email.trim().toLowerCase() });
-      if (!user) {
-        return res.render("login", { error: "Invalid credentials!" });
-      }
+  const { email, password } = req.body;
 
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-        return res.render("login", { error: "Invalid credentials!" });
-      }
+  try {
+    const user = await User.findOne({ email: email.trim().toLowerCase() });
 
-      // Store session data
+    if (!user) {
+      return res.render("login", { error: "User not found!" });
+    }
+
+    // Compare the entered password with the hashed password
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    // ⚙️ Fallback for plain-text passwords (for testing only)
+    if (!isMatch && password === user.password) {
       req.session.user = user;
       req.session.userId = user._id;
-      res.redirect("/home");
-    } catch (err) {
-      console.error(err);
-      res.render("login", { error: "Something went wrong!" });
+      return res.redirect("/home");
     }
-  });
+
+    if (!isMatch) {
+      return res.render("login", { error: "Invalid credentials!" });
+    }
+
+    // ✅ Password matched — log the user in
+    req.session.user = user;
+    req.session.userId = user._id;
+    res.redirect("/home");
+
+  } catch (err) {
+    console.error(err);
+    res.render("login", { error: "Something went wrong. Try again!" });
+  }
+});
 
   // --- Logout ---
   app.post("/logout", (req, res) => {
@@ -738,7 +738,6 @@ app.get("/expenses", isAuthenticated, async (req, res) => {
 });
 
 // --- SUBMIT NEW EXPENSE (Equal Split) ---
-// --- SUBMIT NEW EXPENSE (Equal Split) ---
 app.post("/expenses", isAuthenticated, async (req, res) => {
   try {
     const { group, amount, description, date } = req.body;
@@ -867,6 +866,82 @@ app.get("/expenses/new", async (req, res) => {
       res.status(500).send("Error adding member to group");
     }
   });
+
+  // 🗑️ DELETE GROUP (only creator can delete)
+app.post("/group/:id/delete", isAuthenticated, async (req, res) => {
+  try {
+    const groupId = req.params.id;
+    const userId = String(req.session.userId);
+
+    // ✅ Find the group
+    const group = await Group.findById(groupId);
+    if (!group) {
+      return res.status(404).send("Group not found");
+    }
+
+    // ✅ Only the creator can delete
+    if (String(group.createdBy) !== userId) {
+      return res.status(403).send("Only the creator can delete this group");
+    }
+
+    // ✅ Delete all related expenses
+    await Expense.deleteMany({ group: groupId });
+
+    // ✅ Delete the group itself
+    await Group.findByIdAndDelete(groupId);
+
+    console.log(`🗑️ Group '${group.name}' and its expenses deleted by creator.`);
+    res.redirect("/groups");
+  } catch (error) {
+    console.error("❌ Error deleting group:", error);
+    res.status(500).send("Error deleting group");
+  }
+});
+
+// --- REMOVE MEMBER FROM GROUP ---
+app.post("/group/:groupId/remove/:memberId", isAuthenticated, async (req, res) => {
+  try {
+    const { groupId, memberId } = req.params;
+    const userId = req.session.userId;
+
+    const group = await Group.findById(groupId);
+    if (!group) return res.status(404).send("Group not found");
+
+    // ✅ Only the group creator can remove members
+    if (String(group.createdBy) !== String(userId)) {
+      return res.status(403).send("Only the group creator can remove members!");
+    }
+
+    // ❌ Prevent removing creator themselves
+    if (String(group.createdBy) === String(memberId)) {
+      return res.status(400).send("Creator cannot remove themselves!");
+    }
+
+    // ✅ Remove the member from the group
+    group.members = group.members.filter(id => String(id) !== String(memberId));
+    await group.save();
+
+    // ✅ Also remove the member from all related expenses
+    const expenses = await Expense.find({ group: groupId });
+
+    for (const exp of expenses) {
+      exp.participants = exp.participants.filter(id => String(id) !== String(memberId));
+
+      // Remove from splits map and paidSplits map
+      exp.splits.delete(String(memberId));
+      exp.paidSplits.delete(String(memberId));
+
+      await exp.save();
+    }
+
+    console.log(`🧹 Member ${memberId} removed from group ${groupId} and related expenses cleaned up.`);
+
+    res.redirect(`/group/${groupId}`);
+  } catch (error) {
+    console.error("Error removing member:", error);
+    res.status(500).send("Server error removing member");
+  }
+});
 
     export default app;
   // --- Start Server ---
