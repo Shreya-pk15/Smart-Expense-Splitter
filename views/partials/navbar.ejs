@@ -90,26 +90,25 @@
     document.getElementById("logoutForm").submit();
   }
 </script>
-    <a class="navbar-brand fw-bold" href="/home">💰 Smart Expense Splitter</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link <%= typeof page === 'undefined' || page === 'home' ? 'active' : '' %>" href="/home">Home</a></li>
-        
+
         <% if (locals.userId) { %>
           <li class="nav-item"><a class="nav-link <%= typeof page !== 'undefined' && page === 'groups' ? 'active' : '' %>" href="/groups">Groups</a></li>
           <li class="nav-item"><a class="nav-link <%= typeof page !== 'undefined' && page === 'expenses' ? 'active' : '' %>" href="/expenses">Expenses</a></li>
-          
+
           <li class="nav-item"><a class="nav-link <%= typeof page !== 'undefined' && page === 'profile' ? 'active' : '' %>" href="/profile">Profile</a></li>
-          
+
           <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
         <% } else { %>
           <li class="nav-item"><a class="nav-link <%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>" aria-current="page" href="/login">Login</a></li>
           <li class="nav-item"><a class="nav-link <%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>" href="/register">Sign Up</a></li>
         <% } %>
-        
+
         <li class="nav-item"><a class="nav-link" href="#">About</a></li>
       </ul>
     </div>
